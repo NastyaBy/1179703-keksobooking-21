@@ -7,8 +7,8 @@ const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `
 const OFFER_DESCRIPTION = [`Во всех апартаментах есть полностью оборудованная кухня с микроволновой печью, гостиный уголок, телевизор с плоским экраном, стиральная машина и собственная ванная комната с душем и феном. В числе удобств холодильник, духовка, плита и чайник.`];
 const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
-
-
+const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+const mapPins = document.querySelector(`.map__pins`);
 
 const getRandomNumber = function (min, max) {
   return min + Math.floor(Math.random() * (max - min));
@@ -30,7 +30,7 @@ for (let i = 1; i <= SIZE_ARRAY; i++) {
 
 const getOfferTitle = function () {
   const randomTitle = getRandomNumber(0, OFFER_TITLE.length);
-  return OFFER_TYPE[randomTitle];
+  return OFFER_TITLE[randomTitle];
 };
 
 const getOfferType = function () {
@@ -67,9 +67,9 @@ const getBookingItem = function (avatarNumber) {
     offer: {
       title: getOfferTitle(),
       address: `{{location.x}}, {{location.y}}`,
-      price: `${getRandomNumber(1000, 50000)} руб.`,
+      price: `${getRandomNumber(1000, 500000)} руб.`,
       type: getOfferType(),
-      rooms: getRandomNumber(1, 5),
+      rooms: getRandomNumber(1, 3),
       guests: getRandomNumber(1, 12),
       checkin: getOfferCheck(),
       checkout: getOfferCheck(),
@@ -94,4 +94,20 @@ for (let i = 0; i < 8; i++) {
 const map = document.querySelector(`.map`);
 map.classList.remove(`map--faded`);
 
-console.log(booking);
+
+const renderPin = function (bookingItem) {
+  const pinElement = pinTemplate.cloneNode(true);
+  const pinElementImg = pinElement.querySelector('img');
+
+  pinElement.style.top = `${bookingItem.location.y - 40}px`;
+  pinElement.style.left = `${bookingItem.location.x - 20}px`;
+
+  pinElementImg.setAttribute(`src`, `${bookingItem.author.avatar}`);
+  pinElementImg.setAttribute(`alt`, `${bookingItem.offer.title}`);
+
+  return pinElement;
+};
+
+for (let i = 0; i < 8; i++) {
+  mapPins.appendChild(renderPin(booking[i]));
+}
