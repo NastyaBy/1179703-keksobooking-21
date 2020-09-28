@@ -7,7 +7,7 @@ const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `
 const OFFER_DESCRIPTION = [`Во всех апартаментах есть полностью оборудованная кухня с микроволновой печью, гостиный уголок, телевизор с плоским экраном, стиральная машина и собственная ванная комната с душем и феном. В числе удобств холодильник, духовка, плита и чайник.`];
 const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
-const pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPins = document.querySelector(`.map__pins`);
 
 const getRandomNumber = function (min, max) {
@@ -97,17 +97,18 @@ map.classList.remove(`map--faded`);
 
 const renderPin = function (bookingItem) {
   const pinElement = pinTemplate.cloneNode(true);
-  const pinElementImg = pinElement.querySelector('img');
+  const pinElementImg = pinElement.querySelector(`img`);
 
   pinElement.style.top = `${bookingItem.location.y - 40}px`;
   pinElement.style.left = `${bookingItem.location.x - 20}px`;
-
   pinElementImg.setAttribute(`src`, `${bookingItem.author.avatar}`);
   pinElementImg.setAttribute(`alt`, `${bookingItem.offer.title}`);
 
   return pinElement;
 };
 
+const fragment = document.createDocumentFragment();
 for (let i = 0; i < 8; i++) {
-  mapPins.appendChild(renderPin(booking[i]));
+  fragment.appendChild(renderPin(booking[i]));
 }
+mapPins.appendChild(fragment);
