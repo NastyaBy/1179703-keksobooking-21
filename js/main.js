@@ -6,6 +6,7 @@ const OFFER_CHECKES = [`12:00`, `13:00`, `14:00`];
 const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const OFFER_DESCRIPTION = [`Во всех апартаментах есть полностью оборудованная кухня с микроволновой печью, гостиный уголок, телевизор с плоским экраном, стиральная машина и собственная ванная комната с душем и феном. В числе удобств холодильник, духовка, плита и чайник.`];
 const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+const SIZE_ARRAY = 8;
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPins = document.querySelector(`.map__pins`);
@@ -14,7 +15,21 @@ const getRandomNumber = function (min, max) {
   return min + Math.floor(Math.random() * (max - min));
 };
 
-const SIZE_ARRAY = 8;
+const getRandomItem = function (items) {
+  const randomIndex = getRandomNumber(0, items.length);
+  return items[randomIndex];
+};
+
+const getRandomItems = function (items) {
+  const randomItems = [];
+
+  const randomItemsCount = getRandomNumber(0, items.length);
+  for (let i = 0; i < randomItemsCount; i++) {
+    const randomItem = getRandomItem(items);
+    randomItems.push(randomItem);
+  }
+  return randomItems;
+};
 
 let items = [];
 for (let i = 1; i <= SIZE_ARRAY; i++) {
@@ -28,36 +43,6 @@ for (let i = 1; i <= SIZE_ARRAY; i++) {
   items.splice(idx, 1);
 }
 
-const getOfferTitle = function () {
-  const randomTitle = getRandomNumber(0, OFFER_TITLE.length);
-  return OFFER_TITLE[randomTitle];
-};
-
-const getOfferType = function () {
-  const randomType = getRandomNumber(0, OFFER_TYPE.length);
-  return OFFER_TYPE[randomType];
-};
-
-const getOfferCheck = function () {
-  const randomCheck = getRandomNumber(0, OFFER_CHECKES.length);
-  return OFFER_CHECKES[randomCheck];
-};
-
-const getOfferFeature = function () {
-  const randomFeature = getRandomNumber(0, OFFER_FEATURES.length);
-  return OFFER_FEATURES[randomFeature];
-};
-
-const getOfferDescription = function () {
-  const randomDescription = getRandomNumber(0, OFFER_DESCRIPTION.length);
-  return OFFER_DESCRIPTION[randomDescription];
-};
-
-
-const getOfferPhotos = function () {
-  const randomPhotos = getRandomNumber(0, OFFER_PHOTOS.length);
-  return OFFER_PHOTOS[randomPhotos];
-};
 
 const getBookingItem = function (avatarNumber) {
   return {
@@ -65,17 +50,17 @@ const getBookingItem = function (avatarNumber) {
       avatar: `img/avatars/user0${newItems[avatarNumber]}.png`,
     },
     offer: {
-      title: getOfferTitle(),
+      title: getRandomItems(OFFER_TITLE),
       address: `{{location.x}}, {{location.y}}`,
       price: `${getRandomNumber(1000, 500000)} руб.`,
-      type: getOfferType(),
+      type: getRandomItems(OFFER_TYPE),
       rooms: getRandomNumber(1, 3),
       guests: getRandomNumber(1, 12),
-      checkin: getOfferCheck(),
-      checkout: getOfferCheck(),
-      features: getOfferFeature(),
-      description: getOfferDescription(),
-      photos: getOfferPhotos()
+      checkin: getRandomItems(OFFER_CHECKES),
+      checkout: getRandomItems(OFFER_CHECKES),
+      features: getRandomItems(OFFER_FEATURES),
+      description: getRandomItems(OFFER_DESCRIPTION),
+      photos: getRandomItems(OFFER_PHOTOS)
     },
     location: {
       x: getRandomNumber(31, 1169),
