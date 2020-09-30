@@ -6,7 +6,7 @@ const OFFER_CHECKES = [`12:00`, `13:00`, `14:00`];
 const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const OFFER_DESCRIPTION = [`Во всех апартаментах есть полностью оборудованная кухня с микроволновой печью, гостиный уголок, телевизор с плоским экраном, стиральная машина и собственная ванная комната с душем и феном.`, `Есть холодильник, духовка, плита и чайник.`];
 const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
-const SIZE_ARRAY = [`1`,`2`, `3`, `4`, `5`, `6`, `7`, `8`];
+const SIZE_ARRAY = [`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`];
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
@@ -34,8 +34,6 @@ const getRandomItems = function (items) {
   }
   return randomItems;
 };
-
-
 
 const getBookingItem = function () {
   return {
