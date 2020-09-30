@@ -9,7 +9,7 @@ const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `htt
 const SIZE_ARRAY = 8;
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__pin`);
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapPins = document.querySelector(`.map__pins`);
 
 const getRandomNumber = function (min, max) {
@@ -53,7 +53,7 @@ const getBookingItem = function (avatarNumber) {
     offer: {
       title: getRandomItems(OFFER_TITLE),
       address: `{{location.x}}, {{location.y}}`,
-      price: `${getRandomNumber(1000, 500000)} руб.`,
+      price: `${getRandomNumber(1000, 500000)}`,
       type: getRandomItems(OFFER_TYPE),
       rooms: getRandomNumber(1, 3),
       guests: getRandomNumber(1, 12),
@@ -106,20 +106,20 @@ const renderCard = function (bookingItem) {
 
   cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
   cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
-  cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price}₽/ночь`;
+  cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
   cardElement.querySelector(`.popup__type`).textContent = OffetType[`${bookingItem.offer.type}`];
   cardElement.querySelector(`.popup__text--capacity`).textContent = `${bookingItem.offer.rooms} комнаты для ${bookingItem.offer.guests} гостей`;
-  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.guests}`;
-  cardElement.querySelector(`.popup__feature`).
-  cardElement.querySelector(`.popup__description`).
+  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.checkout}`;
+  cardElement.querySelector(`.popup__feature`);
+  cardElement.querySelector(`.popup__description`);
   cardElement.querySelector(`.popup__photo`).setAttribute(`src`, `${bookingItem.author.photos}`);
 
   return cardElement;
 };
 
 const fragment = document.createDocumentFragment();
+fragment.appendChild(renderCard(booking[0]));
 for (let i = 0; i < 8; i++) {
   fragment.appendChild(renderPin(booking[i]));
-  fragment.appendChild(renderCard(booking[i]));
 }
 mapPins.appendChild(fragment);
