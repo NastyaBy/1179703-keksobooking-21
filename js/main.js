@@ -16,7 +16,13 @@ const map = document.querySelector(`.map`);
 const mapPinMain = document.querySelector(`.map__pin--main`);
 const adForm = document.querySelector(`.ad-form`);
 const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
+const addressInput = adForm.querySelector(`#address`);
 
+const addressPin = function () {
+  const locationX = mapPinMain.offsetTop;
+  const locationY = mapPinMain.offsetLeft;
+  return `${locationX}, ${locationY}`;
+};
 
 const disabledAdForm = function () {
   adForm.classList.add(`ad-form--disabled`);
@@ -24,6 +30,7 @@ const disabledAdForm = function () {
   adFormFieldset.forEach(function (el) {
     el.disabled = true;
   });
+  addressInput.value = addressPin();
 };
 
 disabledAdForm();
@@ -42,6 +49,9 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
     enabledAdForm();
   }
 });
+
+
+
 
 mapPinMain.addEventListener(`keydown`, function (evt) {
   if (evt.key === `Enter`) {
@@ -112,8 +122,8 @@ const renderPin = function (bookingItem) {
   const pinElement = pinTemplate.cloneNode(true);
   const pinElementImg = pinElement.querySelector(`img`);
 
-  pinElement.style.top = `${bookingItem.location.y - 40}px`;
-  pinElement.style.left = `${bookingItem.location.x - 20}px`;
+  pinElement.style.top = `${bookingItem.location.y}px`;
+  pinElement.style.left = `${bookingItem.location.x}px`;
   pinElementImg.setAttribute(`src`, `${bookingItem.author.avatar}`);
   pinElementImg.setAttribute(`alt`, `${bookingItem.offer.title}`);
 
