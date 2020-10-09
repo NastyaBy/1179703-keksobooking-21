@@ -9,9 +9,46 @@ const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `htt
 const SIZE_ARRAY = [`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`];
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+//  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapPins = document.querySelector(`.map__pins`);
-mapPins.setAttributeNode(` disabled`);
+
+const map = document.querySelector(`.map`);
+const mapPinMain = document.querySelector(`.map__pin--main`);
+const adForm = document.querySelector(`.ad-form`);
+const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
+
+
+const disabledAdForm = function () {
+  adForm.classList.add(`ad-form--disabled`);
+
+  adFormFieldset.forEach(function (el) {
+    el.disabled = true;
+  });
+};
+
+disabledAdForm();
+
+const enabledAdForm = function () {
+  adForm.classList.remove(`ad-form--disabled`);
+
+  adFormFieldset.forEach(function (el) {
+    el.disabled = false;
+  });
+};
+
+mapPinMain.addEventListener(`mousedown`, function (evt) {
+  if (evt.which === 1) {
+    map.classList.remove(`map--faded`);
+    enabledAdForm();
+  }
+});
+
+mapPinMain.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    map.classList.remove(`map--faded`);
+    enabledAdForm();
+  }
+});
 
 const getRandomNumber = function (min, max) {
   return min + Math.floor(Math.random() * (max - min));
@@ -69,7 +106,6 @@ for (let i = 0; i < 8; i++) {
 }
 
 
-//  const map = document.querySelector(`.map`);
 //  map.classList.remove(`map--faded`);
 
 const renderPin = function (bookingItem) {
@@ -86,35 +122,36 @@ const renderPin = function (bookingItem) {
 };
 
 
-const OffetType = {
-  palace: `Дворец`,
-  flat: `Квартира`,
-  house: `Дом`,
-  bungalow: `Бунгало`
-};
-const getRenderFeature = function (featureElement, bookingItem, cardElement) {
-  while (featureElement.firstChild) {
-    featureElement.removeChild(featureElement.firstChild);
-  }
-  for (let i = 0; i < bookingItem.offer.features.length; i++) {
-    cardElement.querySelector(`.popup__features`).appendChild(document.createElement(`li`)).classList.add(`popup__feature`, `popup__feature--${bookingItem.offer.features[i]}`);
-  }
-};
-
-const getRenderPhotos = function (photoElement, bookingItem, cardElement) {
-  while (photoElement.firstChild) {
-    photoElement.removeChild(photoElement.firstChild);
-  }
-
-  for (let i = 0; i < bookingItem.offer.photos.length; i++) {
-    const img = document.createElement(`img`);
-    img.src = `${bookingItem.offer.photos[i]}`;
-    img.alt = `Фото жилья`;
-    img.width = 45;
-    img.height = 40;
-    cardElement.querySelector(`.popup__photos`).appendChild(img).classList.add(`popup__photo`);
-  }
-};
+// const OffetType = {
+//   palace: `Дворец`,
+//   flat: `Квартира`,
+//   house: `Дом`,
+//   bungalow: `Бунгало`
+// };
+//
+// const getRenderFeature = function (featureElement, bookingItem, cardElement) {
+//   while (featureElement.firstChild) {
+//     featureElement.removeChild(featureElement.firstChild);
+//   }
+//   for (let i = 0; i < bookingItem.offer.features.length; i++) {
+//     cardElement.querySelector(`.popup__features`).appendChild(document.createElement(`li`)).classList.add(`popup__feature`, `popup__feature--${bookingItem.offer.features[i]}`);
+//   }
+// };
+//
+// const getRenderPhotos = function (photoElement, bookingItem, cardElement) {
+//   while (photoElement.firstChild) {
+//     photoElement.removeChild(photoElement.firstChild);
+//   }
+//
+//   for (let i = 0; i < bookingItem.offer.photos.length; i++) {
+//     const img = document.createElement(`img`);
+//     img.src = `${bookingItem.offer.photos[i]}`;
+//     img.alt = `Фото жилья`;
+//     img.width = 45;
+//     img.height = 40;
+//     cardElement.querySelector(`.popup__photos`).appendChild(img).classList.add(`popup__photo`);
+//   }
+// };
 
 // const renderCard = function (bookingItem) {
 //   const cardElement = cardTemplate.cloneNode(true);
@@ -147,6 +184,3 @@ for (let i = 0; i < 8; i++) {
 // fragment.appendChild(renderCard(booking[0]));
 
 mapPins.appendChild(fragment);
-
-
-
