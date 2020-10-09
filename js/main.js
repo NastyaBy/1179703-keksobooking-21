@@ -11,6 +11,7 @@ const SIZE_ARRAY = [`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`];
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapPins = document.querySelector(`.map__pins`);
+mapPins.setAttributeNode(` disabled`);
 
 const getRandomNumber = function (min, max) {
   return min + Math.floor(Math.random() * (max - min));
@@ -42,7 +43,7 @@ const getBookingItem = function () {
     },
     offer: {
       title: getRandomItem(OFFER_TITLE),
-      address: `{{location.x}}, {{location.y}}`,
+      address: `${location.x}, ${location.y}`,
       price: `${getRandomNumber(1000, 500000)}`,
       type: getRandomItem(OFFER_TYPE),
       rooms: getRandomNumber(1, 3),
@@ -67,9 +68,9 @@ for (let i = 0; i < 8; i++) {
   booking.push(bookingItem);
 }
 
-const map = document.querySelector(`.map`);
-map.classList.remove(`map--faded`);
 
+//  const map = document.querySelector(`.map`);
+//  map.classList.remove(`map--faded`);
 
 const renderPin = function (bookingItem) {
   const pinElement = pinTemplate.cloneNode(true);
@@ -83,6 +84,7 @@ const renderPin = function (bookingItem) {
 
   return pinElement;
 };
+
 
 const OffetType = {
   palace: `Дворец`,
@@ -114,34 +116,37 @@ const getRenderPhotos = function (photoElement, bookingItem, cardElement) {
   }
 };
 
-const renderCard = function (bookingItem) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const featureElement = cardElement.querySelector(`.popup__features`);
-  const photoElement = cardElement.querySelector(`.popup__photos`);
-
-
-  cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
-  cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
-  cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
-  cardElement.querySelector(`.popup__type`).textContent = OffetType[`${bookingItem.offer.type}`];
-  cardElement.querySelector(`.popup__text--capacity`).textContent = `${bookingItem.offer.rooms} комнаты для ${bookingItem.offer.guests} гостей`;
-  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.checkout}`;
-  cardElement.querySelector(`.popup__description`).textContent = `${bookingItem.offer.description}`;
-
-  getRenderFeature(featureElement, bookingItem, cardElement);
-  getRenderPhotos(photoElement, bookingItem, cardElement);
-
-
-  cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
-
-  return cardElement;
-};
+// const renderCard = function (bookingItem) {
+//   const cardElement = cardTemplate.cloneNode(true);
+//   const featureElement = cardElement.querySelector(`.popup__features`);
+//   const photoElement = cardElement.querySelector(`.popup__photos`);
+//
+//
+//   cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
+//   cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
+//   cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
+//   cardElement.querySelector(`.popup__type`).textContent = OffetType[`${bookingItem.offer.type}`];
+//   cardElement.querySelector(`.popup__text--capacity`).textContent = `${bookingItem.offer.rooms} комнаты для ${bookingItem.offer.guests} гостей`;
+//   cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.checkout}`;
+//   cardElement.querySelector(`.popup__description`).textContent = `${bookingItem.offer.description}`;
+//
+//   getRenderFeature(featureElement, bookingItem, cardElement);
+//   getRenderPhotos(photoElement, bookingItem, cardElement);
+//
+//
+//   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
+//
+//   return cardElement;
+// };
 
 const fragment = document.createDocumentFragment();
 
 for (let i = 0; i < 8; i++) {
   fragment.appendChild(renderPin(booking[i]));
 }
-fragment.appendChild(renderCard(booking[0]));
+// fragment.appendChild(renderCard(booking[0]));
 
 mapPins.appendChild(fragment);
+
+
+
