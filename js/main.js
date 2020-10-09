@@ -7,6 +7,9 @@ const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `
 const OFFER_DESCRIPTION = [`Во всех апартаментах есть полностью оборудованная кухня с микроволновой печью, гостиный уголок, телевизор с плоским экраном, стиральная машина и собственная ванная комната с душем и феном.`, `Есть холодильник, духовка, плита и чайник.`];
 const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 const SIZE_ARRAY = [`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`];
+const MIN_TITLE_LENGTH = 30;
+const MAX_TITLE_LENGTH = 100;
+const MAX_PRICE = 1000000;
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 //  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
@@ -50,15 +53,44 @@ mapPinMain.addEventListener(`mousedown`, function (evt) {
   }
 });
 
-
-
-
 mapPinMain.addEventListener(`keydown`, function (evt) {
   if (evt.key === `Enter`) {
     map.classList.remove(`map--faded`);
     enabledAdForm();
   }
 });
+
+const titleInput = adForm.querySelector(`#title`);
+const priceInput = adForm.querySelector(`#price`);
+
+titleInput.addEventListener(`input`, function () {
+  let valueLength = titleInput.value.length;
+  let message = ``;
+
+  if (valueLength < MIN_TITLE_LENGTH) {
+    message = `Ещё ` + `${(MIN_TITLE_LENGTH - valueLength)}` + ` симв.`;
+  } else if (valueLength > MAX_TITLE_LENGTH) {
+    message = `Удалите лишние` + `${(valueLength - MAX_TITLE_LENGTH)}` + `симв.`;
+  }
+
+  titleInput.setCustomValidity(message);
+
+  titleInput.reportValidity();
+});
+
+priceInput.addEventListener(`input`, function () {
+  let valueLength = priceInput.value.length;
+  let message = ``;
+
+  if (valueLength > MAX_PRICE) {
+  }
+
+  priceInput.setCustomValidity(message);
+
+  priceInput.reportValidity();
+});
+
+
 
 const getRandomNumber = function (min, max) {
   return min + Math.floor(Math.random() * (max - min));
