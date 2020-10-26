@@ -22,7 +22,7 @@ const keyboardButtons = {
   Escape: `Escape`
 };
 
-const MainPinSize = {
+const mainPinSize = {
   WIDTH: 65,
   HEIGHT: 65,
   AFTER: 22
@@ -39,8 +39,8 @@ const adForm = document.querySelector(`.ad-form`);
 const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
 const addressInput = adForm.querySelector(`#address`);
 const titleElement = adForm.querySelector(`#title`);
-//  const typeElement = adForm.querySelector(`#type`);
-//  const priceElement = adForm.querySelector(`#price`);
+const typeElement = adForm.querySelector(`#type`);
+const priceElement = adForm.querySelector(`#price`);
 const roomsElement = adForm.querySelector(`#room_number`);
 const capacityElement = adForm.querySelector(`#capacity`);
 
@@ -108,7 +108,6 @@ const getBookings = function () {
 const addPinEvent = (pinElement, bookingItem) => {
   pinElement.addEventListener(`click`, function () {
     map.appendChild(renderCard(bookingItem));
-
   });
 };
 
@@ -212,8 +211,8 @@ const renderPins = function (bookings) {
 };
 
 const getAddres = function () {
-  const valueX = mapPinMain.offsetLeft + Math.floor(MainPinSize.WIDTH / 2);
-  const valueY = mapPinMain.offsetTop + Math.floor((!isPageActive ? MainPinSize.HEIGHT / 2 : MainPinSize.HEIGHT + MainPinSize.AFTER));
+  const valueX = mapPinMain.offsetLeft + Math.floor(mainPinSize.WIDTH / 2);
+  const valueY = mapPinMain.offsetTop + Math.floor((!isPageActive ? mainPinSize.HEIGHT / 2 : mainPinSize.HEIGHT + mainPinSize.AFTER));
 
   return {valueX, valueY};
 };
@@ -253,6 +252,37 @@ const validateTitle = function () {
   }
 
   titleElement.setCustomValidity(message);
+};
+
+const minPrice = {
+  palace: 10000,
+  flat: 1000,
+  house: 5000,
+  bungalow: 0
+};
+
+const isPriceValid = function (typeValue, priceValue) {
+  let isValid = false;
+  if (typeValue === OffetType.bungalow && priceValue >= minPrice.bungalow) {
+    isValid = true;
+  } else if (typeValue === OffetType.flat && priceValue >= minPrice.flat) {
+    isValid = true;
+  } else if (typeValue === OffetType.house && priceValue >= mapPins.house) {
+    isValid = true;
+  } else if (typeValue === OffetType.palace && priceValue >= mapPins.palace) {
+    isValid = true;
+  }
+  return isValid;
+};
+
+const validateTypePrice = function () {
+  const typeValue = parseInt(typeElement.value, 10);
+  const priceValue = parseInt(priceElement.value, 10);
+
+  const isValid = isPriceValid(typeValue, priceValue);
+
+  const typeMessage = isValid ? `` : `Слишком маленькая цена`;
+  typeElement.setCustomValidity(typeMessage);
 };
 
 const Rooms = {
@@ -299,6 +329,7 @@ const validateRoomsCapacity = function () {
 
 const validateForm = function () {
   validateRoomsCapacity();
+  validateTypePrice();
   adForm.reportValidity();
 };
 
