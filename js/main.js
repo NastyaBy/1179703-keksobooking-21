@@ -158,10 +158,22 @@ const getRenderPhotos = function (photoElement, bookingItem, cardElement) {
   }
 };
 
+let cardElement = null;
+
+const closePopup = () => {
+  if (cardElement !== null) {
+    cardElement.remove();
+    cardElement = null;
+  }
+};
+
 const renderCard = function (bookingItem) {
-  const cardElement = cardTemplate.cloneNode(true);
+  closePopup();
+  cardElement = cardTemplate.cloneNode(true);
   const featureElement = cardElement.querySelector(`.popup__features`);
   const photoElement = cardElement.querySelector(`.popup__photos`);
+  const buttonClose = cardElement.querySelector(`.popup__close`);
+
 
   cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
   cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
@@ -175,6 +187,10 @@ const renderCard = function (bookingItem) {
   getRenderPhotos(photoElement, bookingItem, cardElement);
 
   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
+
+  buttonClose.addEventListener('click', function () {
+    closePopup();
+  });
 
   return cardElement;
 };
@@ -318,14 +334,6 @@ const addMapPinEvent = function () {
     }
   });
 };
-
-
-//  const closeCard = document.querySelector(`.popup_close`);
-
-
-// closeCard.addEventListener('click', function (evt) {
-//   evt.preventDefault();
-// });
 
 const render = function () {
   const bookings = getBookings();
