@@ -115,7 +115,7 @@ const renderPin = function (bookingItem) {
 
   pinElement.addEventListener(`click`, function () {
     renderCard(bookingItem);
-    console.info('Click!');
+    console.info(`Click!`);
   });
 
   return pinElement;
@@ -158,7 +158,6 @@ const renderCard = function (bookingItem) {
   const featureElement = cardElement.querySelector(`.popup__features`);
   const photoElement = cardElement.querySelector(`.popup__photos`);
 
-
   cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
   cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
   cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
@@ -172,8 +171,6 @@ const renderCard = function (bookingItem) {
 
   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
 
-
-  fragment.appendChild(renderCard(cardElement));
   return cardElement;
 };
 
@@ -318,7 +315,7 @@ const addMapPinEvent = function () {
 };
 
 
-const closeCard = document.querySelector(`.popup_close`);
+//  const closeCard = document.querySelector(`.popup_close`);
 
 
 // closeCard.addEventListener('click', function (evt) {
