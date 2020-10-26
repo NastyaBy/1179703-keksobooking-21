@@ -314,7 +314,7 @@ const addMapPinEvent = function () {
 
 const closeCard = document.querySelector(`.popup_close`);
 
-pinTemplate.addEventListener('click', function (evt) {
+pinTemplate.addEventListener(`click`, function (evt) {
   evt.preventDefault();
   renderCard();
   // fragment.appendChild(renderCard(bookings[i]));
