@@ -188,12 +188,18 @@ const renderCard = function (bookingItem) {
 
   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
 
-  buttonClose.addEventListener('click', function () {
+  buttonClose.addEventListener(`click`, function () {
     closePopup();
   });
 
   return cardElement;
 };
+
+document.addEventListener(`keydown`, function (evt) {
+  if (evt.key === keyboardButtons.Escape) {
+    closePopup();
+  }
+});
 
 const renderPins = function (bookings) {
   const fragment = document.createDocumentFragment();
