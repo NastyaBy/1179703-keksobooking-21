@@ -104,6 +104,14 @@ const getBookings = function () {
   return booking;
 };
 
+
+const addPinEvent = (pinElement, bookingItem) => {
+  pinElement.addEventListener(`click`, function () {
+    map.appendChild(renderCard(bookingItem));
+
+  });
+};
+
 const renderPin = function (bookingItem) {
   const pinElement = pinTemplate.cloneNode(true);
   const pinElementImg = pinElement.querySelector(`img`);
@@ -113,10 +121,7 @@ const renderPin = function (bookingItem) {
   pinElementImg.setAttribute(`src`, `${bookingItem.author.avatar}`);
   pinElementImg.setAttribute(`alt`, `${bookingItem.offer.title}`);
 
-  pinElement.addEventListener(`click`, function () {
-    renderCard(bookingItem);
-    console.info(`Click!`);
-  });
+  addPinEvent(pinElement, bookingItem);
 
   return pinElement;
 };
