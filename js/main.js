@@ -113,6 +113,10 @@ const renderPin = function (bookingItem) {
   pinElementImg.setAttribute(`src`, `${bookingItem.author.avatar}`);
   pinElementImg.setAttribute(`alt`, `${bookingItem.offer.title}`);
 
+  pinElement.addEventListener(`click`, function () {
+    renderCard(bookingItem);
+    console.info('Click!');
+  });
 
   return pinElement;
 };
@@ -166,9 +170,10 @@ const renderCard = function (bookingItem) {
   getRenderFeature(featureElement, bookingItem, cardElement);
   getRenderPhotos(photoElement, bookingItem, cardElement);
 
-
   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
 
+
+  fragment.appendChild(renderCard(cardElement));
   return cardElement;
 };
 
@@ -312,13 +317,8 @@ const addMapPinEvent = function () {
   });
 };
 
-const closeCard = document.querySelector(`.popup_close`);
 
-pinTemplate.addEventListener(`click`, function (evt) {
-  evt.preventDefault();
-  renderCard();
-  // fragment.appendChild(renderCard(bookings[i]));
-});
+const closeCard = document.querySelector(`.popup_close`);
 
 
 // closeCard.addEventListener('click', function (evt) {
