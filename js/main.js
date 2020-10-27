@@ -133,28 +133,29 @@ const OffetType = {
   bungalow: `Бунгало`
 };
 
-const getRenderFeature = function (featureElement, bookingItem, cardElement) {
-  while (featureElement.firstChild) {
-    featureElement.removeChild(featureElement.firstChild);
-  }
-  for (let i = 0; i < bookingItem.offer.features.length; i++) {
-    cardElement.querySelector(`.popup__features`).appendChild(document.createElement(`li`)).classList.add(`popup__feature`, `popup__feature--${bookingItem.offer.features[i]}`);
+const getRenderFeature = function (featureElement, features) {
+  featureElement.innerHTML = ``;
+
+  for (let i = 0; i < features.length; i++) {
+    const liElement = document.createElement(`li`);
+    liElement.classList.add(`popup__feature`, `popup__feature--${features[i]}`);
+
+    featureElement.appendChild(liElement);
   }
 };
 
-const getRenderPhotos = function (photoElement, bookingItem, cardElement) {
-  while (photoElement.firstChild) {
-    photoElement.removeChild(photoElement.firstChild);
+const getRenderPhotos = function (photoElement, photos) {
+  const imgTemplate = photoElement.querySelector(`.popup__photo`);
+
+  photoElement.innerHTML = ``;
+
+  for (let i = 0; i < photos.length; i++) {
+    const img = imgTemplate.cloneNode(true);
+    img.src = `${photos[i]}`;
+
+    photoElement.appendChild(img);
   }
 
-  for (let i = 0; i < bookingItem.offer.photos.length; i++) {
-    const img = document.createElement(`img`);
-    img.src = `${bookingItem.offer.photos[i]}`;
-    img.alt = `Фото жилья`;
-    img.width = 45;
-    img.height = 40;
-    cardElement.querySelector(`.popup__photos`).appendChild(img).classList.add(`popup__photo`);
-  }
 };
 
 let cardElement = null;
@@ -182,8 +183,8 @@ const renderCard = function (bookingItem) {
   cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.checkout}`;
   cardElement.querySelector(`.popup__description`).textContent = `${bookingItem.offer.description}`;
 
-  getRenderFeature(featureElement, bookingItem, cardElement);
-  getRenderPhotos(photoElement, bookingItem, cardElement);
+  getRenderFeature(featureElement, bookingItem.offer.features);
+  getRenderPhotos(photoElement, bookingItem.offer.photos);
 
   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
 
