@@ -352,6 +352,12 @@ adForm.addEventListener(`change`, function (evt) {
     case capacityElement.id:
       validateRoomsCapacity();
       break;
+    case typeElement.id:
+      validateTypePrice();
+      break;
+    case priceElement.id:
+      validateTypePrice();
+      break;
   }
   adForm.reportValidity();
 });
