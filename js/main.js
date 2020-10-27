@@ -1,8 +1,6 @@
 'use strict';
 
-const OFFER_TITLE = [`Квартира на проспекте`, `Апартаменты в цетре`, `Просторная квартира`, `Стильные апартаменты`, `Ваш дом`];
-const OFFER_TYPE = [`palace`, `flat`, `house`, `bungalow`];
-const OFFER_CHECKES = [`12:00`, `13:00`, `14:00`];
+
 const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const OFFER_DESCRIPTION = [`Во всех апартаментах есть полностью оборудованная кухня с микроволновой печью, гостиный уголок, телевизор с плоским экраном, стиральная машина и собственная ванная комната с душем и феном.`, `Есть холодильник, духовка, плита и чайник.`];
 const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
@@ -75,14 +73,14 @@ const getBookingItem = function () {
       avatar: `img/avatars/user0${getRandomItem(SIZE_ARRAY)}.png`,
     },
     offer: {
-      title: getRandomItem(OFFER_TITLE),
+      title: getRandomItem(window.data.OFFER_TITLE),
       address: `${location.x}, ${location.y}`,
       price: `${getRandomNumber(1000, 500000)}`,
-      type: getRandomItem(OFFER_TYPE),
+      type: getRandomItem(window.data.OFFER_TYPE),
       rooms: getRandomNumber(1, 3),
       guests: getRandomNumber(1, 12),
-      checkin: getRandomItem(OFFER_CHECKES),
-      checkout: getRandomItem(OFFER_CHECKES),
+      checkin: getRandomItem(window.data.OFFER_CHECKES),
+      checkout: getRandomItem(window.data.OFFER_CHECKES),
       features: getRandomItems(OFFER_FEATURES),
       description: getRandomItem(OFFER_DESCRIPTION),
       photos: getRandomItems(OFFER_PHOTOS)
