@@ -8,7 +8,6 @@ const OFFER_DESCRIPTION = [`Во всех апартаментах есть по
 const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 const SIZE_ARRAY = [`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`];
 
-
 const titleLength = {
   MIN: 30,
   MAX: 100
@@ -19,28 +18,29 @@ const mouseButton = {
 };
 
 const keyboardButtons = {
-  Enter: `Enter`
+  Enter: `Enter`,
+  Escape: `Escape`
 };
 
-const MainPinSize = {
+const mainPinSize = {
   WIDTH: 65,
   HEIGHT: 65,
   AFTER: 22
 };
 
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-//  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 const mapPins = document.querySelector(`.map__pins`);
 
 const map = document.querySelector(`.map`);
 const mapPinMain = document.querySelector(`.map__pin--main`);
-// const mapFilters = document.querySelector(`.map__filters`);
+//  const mapFilters = document.querySelector(`.map__filters`);
 const adForm = document.querySelector(`.ad-form`);
 const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
 const addressInput = adForm.querySelector(`#address`);
 const titleElement = adForm.querySelector(`#title`);
-//  const typeElement = adForm.querySelector(`#type`);
-//  const priceElement = adForm.querySelector(`#price`);
+const typeElement = adForm.querySelector(`#type`);
+const priceElement = adForm.querySelector(`#price`);
 const roomsElement = adForm.querySelector(`#room_number`);
 const capacityElement = adForm.querySelector(`#capacity`);
 
@@ -104,6 +104,13 @@ const getBookings = function () {
   return booking;
 };
 
+
+const addPinEvent = (pinElement, bookingItem) => {
+  pinElement.addEventListener(`click`, function () {
+    map.appendChild(renderCard(bookingItem));
+  });
+};
+
 const renderPin = function (bookingItem) {
   const pinElement = pinTemplate.cloneNode(true);
   const pinElementImg = pinElement.querySelector(`img`);
@@ -113,64 +120,85 @@ const renderPin = function (bookingItem) {
   pinElementImg.setAttribute(`src`, `${bookingItem.author.avatar}`);
   pinElementImg.setAttribute(`alt`, `${bookingItem.offer.title}`);
 
+  addPinEvent(pinElement, bookingItem);
 
   return pinElement;
 };
 
 
-// const OffetType = {
-//   palace: `Дворец`,
-//   flat: `Квартира`,
-//   house: `Дом`,
-//   bungalow: `Бунгало`
-// };
-//
-// const getRenderFeature = function (featureElement, bookingItem, cardElement) {
-//   while (featureElement.firstChild) {
-//     featureElement.removeChild(featureElement.firstChild);
-//   }
-//   for (let i = 0; i < bookingItem.offer.features.length; i++) {
-//     cardElement.querySelector(`.popup__features`).appendChild(document.createElement(`li`)).classList.add(`popup__feature`, `popup__feature--${bookingItem.offer.features[i]}`);
-//   }
-// };
-//
-// const getRenderPhotos = function (photoElement, bookingItem, cardElement) {
-//   while (photoElement.firstChild) {
-//     photoElement.removeChild(photoElement.firstChild);
-//   }
-//
-//   for (let i = 0; i < bookingItem.offer.photos.length; i++) {
-//     const img = document.createElement(`img`);
-//     img.src = `${bookingItem.offer.photos[i]}`;
-//     img.alt = `Фото жилья`;
-//     img.width = 45;
-//     img.height = 40;
-//     cardElement.querySelector(`.popup__photos`).appendChild(img).classList.add(`popup__photo`);
-//   }
-// };
+const OffetType = {
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalow: `Бунгало`
+};
 
-// const renderCard = function (bookingItem) {
-//   const cardElement = cardTemplate.cloneNode(true);
-//   const featureElement = cardElement.querySelector(`.popup__features`);
-//   const photoElement = cardElement.querySelector(`.popup__photos`);
-//
-//
-//   cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
-//   cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
-//   cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
-//   cardElement.querySelector(`.popup__type`).textContent = OffetType[`${bookingItem.offer.type}`];
-//   cardElement.querySelector(`.popup__text--capacity`).textContent = `${bookingItem.offer.rooms} комнаты для ${bookingItem.offer.guests} гостей`;
-//   cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.checkout}`;
-//   cardElement.querySelector(`.popup__description`).textContent = `${bookingItem.offer.description}`;
-//
-//   getRenderFeature(featureElement, bookingItem, cardElement);
-//   getRenderPhotos(photoElement, bookingItem, cardElement);
-//
-//
-//   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
-//
-//   return cardElement;
-// };
+const getRenderFeature = function (featureElement, bookingItem, cardElement) {
+  while (featureElement.firstChild) {
+    featureElement.removeChild(featureElement.firstChild);
+  }
+  for (let i = 0; i < bookingItem.offer.features.length; i++) {
+    cardElement.querySelector(`.popup__features`).appendChild(document.createElement(`li`)).classList.add(`popup__feature`, `popup__feature--${bookingItem.offer.features[i]}`);
+  }
+};
+
+const getRenderPhotos = function (photoElement, bookingItem, cardElement) {
+  while (photoElement.firstChild) {
+    photoElement.removeChild(photoElement.firstChild);
+  }
+
+  for (let i = 0; i < bookingItem.offer.photos.length; i++) {
+    const img = document.createElement(`img`);
+    img.src = `${bookingItem.offer.photos[i]}`;
+    img.alt = `Фото жилья`;
+    img.width = 45;
+    img.height = 40;
+    cardElement.querySelector(`.popup__photos`).appendChild(img).classList.add(`popup__photo`);
+  }
+};
+
+let cardElement = null;
+
+const closePopup = () => {
+  if (cardElement !== null) {
+    cardElement.remove();
+    cardElement = null;
+  }
+};
+
+const renderCard = function (bookingItem) {
+  closePopup();
+  cardElement = cardTemplate.cloneNode(true);
+  const featureElement = cardElement.querySelector(`.popup__features`);
+  const photoElement = cardElement.querySelector(`.popup__photos`);
+  const buttonClose = cardElement.querySelector(`.popup__close`);
+
+
+  cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
+  cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
+  cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
+  cardElement.querySelector(`.popup__type`).textContent = OffetType[`${bookingItem.offer.type}`];
+  cardElement.querySelector(`.popup__text--capacity`).textContent = `${bookingItem.offer.rooms} комнаты для ${bookingItem.offer.guests} гостей`;
+  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.checkout}`;
+  cardElement.querySelector(`.popup__description`).textContent = `${bookingItem.offer.description}`;
+
+  getRenderFeature(featureElement, bookingItem, cardElement);
+  getRenderPhotos(photoElement, bookingItem, cardElement);
+
+  cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
+
+  buttonClose.addEventListener(`click`, function () {
+    closePopup();
+  });
+
+  return cardElement;
+};
+
+document.addEventListener(`keydown`, function (evt) {
+  if (evt.key === keyboardButtons.Escape) {
+    closePopup();
+  }
+});
 
 const renderPins = function (bookings) {
   const fragment = document.createDocumentFragment();
@@ -182,11 +210,9 @@ const renderPins = function (bookings) {
   mapPins.appendChild(fragment);
 };
 
-// fragment.appendChild(renderCard(booking[0]));
-
 const getAddres = function () {
-  const valueX = mapPinMain.offsetLeft + Math.floor(MainPinSize.WIDTH / 2);
-  const valueY = mapPinMain.offsetTop + Math.floor((!isPageActive ? MainPinSize.HEIGHT / 2 : MainPinSize.HEIGHT + MainPinSize.AFTER));
+  const valueX = mapPinMain.offsetLeft + Math.floor(mainPinSize.WIDTH / 2);
+  const valueY = mapPinMain.offsetTop + Math.floor((!isPageActive ? mainPinSize.HEIGHT / 2 : mainPinSize.HEIGHT + mainPinSize.AFTER));
 
   return {valueX, valueY};
 };
@@ -228,20 +254,36 @@ const validateTitle = function () {
   titleElement.setCustomValidity(message);
 };
 
-// const validatePrice = function () {
-//   priceElement.addEventListener(`input`, function () {
-//     let valueLength = priceElement.value.length;
-//     let message = ``;
+const minPrice = {
+  palace: 10000,
+  flat: 1000,
+  house: 5000,
+  bungalow: 0
+};
 
-//     if (valueLength > MAX_PRICE) {
-//       message = `Цена не больше ` + `${(MAX_PRICE)}`;
-//     }
+const isPriceValid = function (typeValue, priceValue) {
+  let isValid = false;
+  if (typeValue === OffetType.bungalow && priceValue >= minPrice.bungalow) {
+    isValid = true;
+  } else if (typeValue === OffetType.flat && priceValue >= minPrice.flat) {
+    isValid = true;
+  } else if (typeValue === OffetType.house && priceValue >= mapPins.house) {
+    isValid = true;
+  } else if (typeValue === OffetType.palace && priceValue >= mapPins.palace) {
+    isValid = true;
+  }
+  return isValid;
+};
 
-//     priceElement.setCustomValidity(message);
+const validateTypePrice = function () {
+  const typeValue = parseInt(typeElement.value, 10);
+  const priceValue = parseInt(priceElement.value, 10);
 
-//     priceElement.reportValidity();
-//   });
-// };
+  const isValid = isPriceValid(typeValue, priceValue);
+
+  const typeMessage = isValid ? `` : `Слишком маленькая цена`;
+  typeElement.setCustomValidity(typeMessage);
+};
 
 const Rooms = {
   ONE: 1,
@@ -287,6 +329,7 @@ const validateRoomsCapacity = function () {
 
 const validateForm = function () {
   validateRoomsCapacity();
+  validateTypePrice();
   adForm.reportValidity();
 };
 
@@ -308,6 +351,12 @@ adForm.addEventListener(`change`, function (evt) {
       break;
     case capacityElement.id:
       validateRoomsCapacity();
+      break;
+    case typeElement.id:
+      validateTypePrice();
+      break;
+    case priceElement.id:
+      validateTypePrice();
       break;
   }
   adForm.reportValidity();
