@@ -269,12 +269,16 @@ const minPrice = {
 const rewritingPlaceholder = function (typeValue) {
   if (typeValue === OFFER_TYPE[3]) {
     priceElement.setAttribute(`placeholder`, `${minPrice.bungalow}`);
+    priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
   } else if (typeValue === OFFER_TYPE[1]) {
     priceElement.setAttribute(`placeholder`, `${minPrice.flat}`);
+    priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
   } else if (typeValue === OFFER_TYPE[2]) {
     priceElement.setAttribute(`placeholder`, `${mapPins.house}`);
+    priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
   } else if (typeValue === OFFER_TYPE[0]) {
     priceElement.setAttribute(`placeholder`, `${mapPins.palace}`);
+    priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
   }
 };
 
