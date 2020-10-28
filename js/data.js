@@ -68,12 +68,7 @@
   };
 
   window.data = {
-    getRandomNumber,
-    getRandomItem,
-    getRandomItems,
-    getBookingItem,
     getBookings
   };
-
 
 })();
