@@ -1,13 +1,5 @@
 'use strict';
 
-const OFFER_TITLE = [`Квартира на проспекте`, `Апартаменты в цетре`, `Просторная квартира`, `Стильные апартаменты`, `Ваш дом`];
-const OFFER_TYPE = [`palace`, `flat`, `house`, `bungalow`];
-const OFFER_CHECKES = [`12:00`, `13:00`, `14:00`];
-const OFFER_FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
-const OFFER_DESCRIPTION = [`Во всех апартаментах есть полностью оборудованная кухня с микроволновой печью, гостиный уголок, телевизор с плоским экраном, стиральная машина и собственная ванная комната с душем и феном.`, `Есть холодильник, духовка, плита и чайник.`];
-const OFFER_PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
-const SIZE_ARRAY = [`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`];
-
 const titleLength = {
   MIN: 30,
   MAX: 100
@@ -46,65 +38,6 @@ const capacityElement = adForm.querySelector(`#capacity`);
 
 let isPageActive = false;
 
-const getRandomNumber = function (min, max) {
-  return min + Math.floor(Math.random() * (max - min));
-};
-
-const getRandomItem = function (items) {
-  const randomIndex = getRandomNumber(0, items.length);
-  return items[randomIndex];
-};
-
-const getRandomItems = function (items) {
-  const randomItems = [];
-  const randomItemsCount = getRandomNumber(0, items.length);
-
-  while (randomItems.length < randomItemsCount) {
-    const randomItem = getRandomItem(items);
-
-    if (!randomItems.includes(randomItem)) {
-      randomItems.push(randomItem);
-    }
-  }
-  return randomItems;
-};
-
-const getBookingItem = function () {
-  return {
-    author: {
-      avatar: `img/avatars/user0${getRandomItem(SIZE_ARRAY)}.png`,
-    },
-    offer: {
-      title: getRandomItem(OFFER_TITLE),
-      address: `${location.x}, ${location.y}`,
-      price: `${getRandomNumber(1000, 500000)}`,
-      type: getRandomItem(OFFER_TYPE),
-      rooms: getRandomNumber(1, 3),
-      guests: getRandomNumber(1, 12),
-      checkin: getRandomItem(OFFER_CHECKES),
-      checkout: getRandomItem(OFFER_CHECKES),
-      features: getRandomItems(OFFER_FEATURES),
-      description: getRandomItem(OFFER_DESCRIPTION),
-      photos: getRandomItems(OFFER_PHOTOS)
-    },
-    location: {
-      x: getRandomNumber(31, 1169),
-      y: getRandomNumber(130, 630)
-    },
-  };
-};
-
-const getBookings = function () {
-  const booking = [];
-
-  for (let i = 0; i < 8; i++) {
-    const bookingItem = getBookingItem(i);
-    booking.push(bookingItem);
-  }
-  return booking;
-};
-
-
 const addPinEvent = (pinElement, bookingItem) => {
   pinElement.addEventListener(`click`, function () {
     map.appendChild(showPopup(bookingItem));
@@ -124,7 +57,6 @@ const renderPin = function (bookingItem) {
 
   return pinElement;
 };
-
 
 const OffetType = {
   palace: `Дворец`,
@@ -258,6 +190,12 @@ const validateTitle = function () {
   titleElement.setCustomValidity(message);
 };
 
+const typeOffer = {
+  palace: `palace`,
+  flat: `flat`,
+  house: `house`,
+  bungalow: `bungalow`
+};
 
 const minPrice = {
   palace: 10000,
@@ -267,16 +205,16 @@ const minPrice = {
 };
 
 const rewritingPlaceholder = function (typeValue) {
-  if (typeValue === OFFER_TYPE[3]) {
+  if (typeValue === typeOffer.bungalow) {
     priceElement.setAttribute(`placeholder`, `${minPrice.bungalow}`);
     priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
-  } else if (typeValue === OFFER_TYPE[1]) {
+  } else if (typeValue === typeOffer.flat) {
     priceElement.setAttribute(`placeholder`, `${minPrice.flat}`);
     priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
-  } else if (typeValue === OFFER_TYPE[2]) {
+  } else if (typeValue === typeOffer.house) {
     priceElement.setAttribute(`placeholder`, `${mapPins.house}`);
     priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
-  } else if (typeValue === OFFER_TYPE[0]) {
+  } else if (typeValue === typeOffer.palace) {
     priceElement.setAttribute(`placeholder`, `${mapPins.palace}`);
     priceElement.setAttribute(`min`, `${minPrice.bungalow}`);
   }
@@ -284,13 +222,13 @@ const rewritingPlaceholder = function (typeValue) {
 
 const isPriceValid = function (typeValue, priceValue) {
   let isValid = false;
-  if (typeValue === OFFER_TYPE[3] && priceValue >= minPrice.bungalow) {
+  if (typeValue === typeOffer.bungalow && priceValue >= minPrice.bungalow) {
     isValid = true;
-  } else if (typeValue === OFFER_TYPE[1] && priceValue >= minPrice.flat) {
+  } else if (typeValue === typeOffer.flat && priceValue >= minPrice.flat) {
     isValid = true;
-  } else if (typeValue === OFFER_TYPE[2] && priceValue >= mapPins.house) {
+  } else if (typeValue === typeOffer.house && priceValue >= mapPins.house) {
     isValid = true;
-  } else if (typeValue === OFFER_TYPE[0] && priceValue >= mapPins.palace) {
+  } else if (typeValue === typeOffer.palace && priceValue >= mapPins.palace) {
     isValid = true;
   }
   return isValid;
@@ -402,7 +340,7 @@ const addMapPinEvent = function () {
 };
 
 const render = function () {
-  const bookings = getBookings();
+  const bookings = window.data.getBookings();
   renderPins(bookings);
 };
 
