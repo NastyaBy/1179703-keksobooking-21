@@ -5,11 +5,6 @@
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   window.pin.mapPinMain = document.querySelector(`.map__pin--main`);
 
-  const mainPinSize = {
-    WIDTH: 65,
-    HEIGHT: 65,
-    AFTER: 22
-  };
 
   const mouseButton = {
     left: 1
@@ -19,8 +14,6 @@
     Enter: `Enter`,
     Escape: `Escape`
   };
-
-
 
   const addPinEvent = (pinElement, bookingItem) => {
     pinElement.addEventListener(`click`, function () {
@@ -59,14 +52,14 @@
   };
 
   const addMapPinEvent = function () {
-    mapPinMain.addEventListener(`mousedown`, function (evt) {
+    window.pin.mapPinMain.addEventListener(`mousedown`, function (evt) {
       if (evt.which === mouseButton.left) {
         window.map.activete();
         render();
       }
     });
 
-    mapPinMain.addEventListener(`keydown`, function (evt) {
+    window.pin.mapPinMain.addEventListener(`keydown`, function (evt) {
       if (evt.key === keyboardButtons.Enter) {
         window.map.activete();
         render();

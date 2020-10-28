@@ -1,7 +1,15 @@
 'use strict';
 (() => {
   window.map.map = document.querySelector(`.map`);
+  const addressInput = window.form.adForm.querySelector(`#address`);
 
+  const mainPinSize = {
+    WIDTH: 65,
+    HEIGHT: 65,
+    AFTER: 22
+  };
+
+  let isPageActive = false;
 
   const getAddres = function () {
     const valueX = window.pin.mapPinMain.offsetLeft + Math.floor(mainPinSize.WIDTH / 2);
@@ -21,10 +29,10 @@
 
   const activete = function () {
     isPageActive = true;
-    changeElementsState();
+    window.form.changeElementsState();
     updateAddress();
-    rewritingPlaceholder();
-    publishForm();
+    window.validate.rewritingPlaceholder();
+    window.form.publishForm();
   };
 
   window.map = {
