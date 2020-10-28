@@ -5,14 +5,6 @@ const titleLength = {
   MAX: 100
 };
 
-
-const mainPinSize = {
-  WIDTH: 65,
-  HEIGHT: 65,
-  AFTER: 22
-};
-
-
 const mapPinMain = document.querySelector(`.map__pin--main`);
 //  const mapFilters = document.querySelector(`.map__filters`);
 const adForm = document.querySelector(`.ad-form`);
@@ -26,21 +18,6 @@ const capacityElement = adForm.querySelector(`#capacity`);
 
 let isPageActive = false;
 
-const getAddres = function () {
-  const valueX = mapPinMain.offsetLeft + Math.floor(mainPinSize.WIDTH / 2);
-  const valueY = mapPinMain.offsetTop + Math.floor((!isPageActive ? mainPinSize.HEIGHT / 2 : mainPinSize.HEIGHT + mainPinSize.AFTER));
-
-  return {valueX, valueY};
-};
-
-const setAddres = function (valueX, valueY) {
-  addressInput.value = `${valueX}, ${valueY}`;
-};
-
-const updateAddress = function () {
-  const address = getAddres();
-  setAddres(address.valueX, address.valueY);
-};
 
 const changeElementsState = function () {
 
@@ -182,39 +159,11 @@ const addFormEvents = function () {
     adForm.reportValidity();
   });
 };
-const publishForm = () => {
-  adForm.addEventListener(`change`, function (evt) {
-    switch (evt.target.id) {
-      case roomsElement.id:
-        validateRoomsCapacity();
-        break;
-      case capacityElement.id:
-        validateRoomsCapacity();
-        break;
-      case typeElement.id:
-        validateTypePrice();
-        break;
-      case priceElement.id:
-        validateTypePrice();
-        break;
-    }
-    adForm.reportValidity();
-  });
-};
-
-
-const activete = function () {
-  isPageActive = true;
-  changeElementsState();
-  updateAddress();
-  rewritingPlaceholder();
-  publishForm();
-};
 
 const deactivate = function () {
   isPageActive = false;
   changeElementsState();
-  updateAddress();
+  window.map.updateAddress();
 };
 
 const start = function () {
