@@ -107,7 +107,7 @@ const getBookings = function () {
 
 const addPinEvent = (pinElement, bookingItem) => {
   pinElement.addEventListener(`click`, function () {
-    map.appendChild(renderCard(bookingItem));
+    map.appendChild(showPopup(bookingItem));
   });
 };
 
@@ -164,10 +164,11 @@ const closePopup = () => {
   if (cardElement !== null) {
     cardElement.remove();
     cardElement = null;
+    document.removeEventListener(`keydown`, onDocumentKeyDown);
   }
 };
 
-const renderCard = function (bookingItem) {
+const showPopup = function (bookingItem) {
   closePopup();
   cardElement = cardTemplate.cloneNode(true);
   const featureElement = cardElement.querySelector(`.popup__features`);
@@ -188,6 +189,8 @@ const renderCard = function (bookingItem) {
 
   cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
 
+  document.addEventListener(`keydown`, onDocumentKeyDown);
+
   buttonClose.addEventListener(`click`, function () {
     closePopup();
   });
@@ -195,11 +198,11 @@ const renderCard = function (bookingItem) {
   return cardElement;
 };
 
-document.addEventListener(`keydown`, function (evt) {
+const onDocumentKeyDown = (evt) => {
   if (evt.key === keyboardButtons.Escape) {
     closePopup();
   }
-});
+};
 
 const renderPins = function (bookings) {
   const fragment = document.createDocumentFragment();
@@ -255,6 +258,7 @@ const validateTitle = function () {
   titleElement.setCustomValidity(message);
 };
 
+
 const minPrice = {
   palace: 10000,
   flat: 1000,
@@ -262,27 +266,39 @@ const minPrice = {
   bungalow: 0
 };
 
+const rewritingPlaceholder = function (typeValue) {
+  if (typeValue === OFFER_TYPE[3]) {
+    priceElement.setAttribute(`placeholder`, `${minPrice.bungalow}`);
+  } else if (typeValue === OFFER_TYPE[1]) {
+    priceElement.setAttribute(`placeholder`, `${minPrice.flat}`);
+  } else if (typeValue === OFFER_TYPE[2]) {
+    priceElement.setAttribute(`placeholder`, `${mapPins.house}`);
+  } else if (typeValue === OFFER_TYPE[0]) {
+    priceElement.setAttribute(`placeholder`, `${mapPins.palace}`);
+  }
+};
+
 const isPriceValid = function (typeValue, priceValue) {
   let isValid = false;
-  if (typeValue === OffetType.bungalow && priceValue >= minPrice.bungalow) {
+  if (typeValue === OFFER_TYPE[3] && priceValue >= minPrice.bungalow) {
     isValid = true;
-  } else if (typeValue === OffetType.flat && priceValue >= minPrice.flat) {
+  } else if (typeValue === OFFER_TYPE[1] && priceValue >= minPrice.flat) {
     isValid = true;
-  } else if (typeValue === OffetType.house && priceValue >= mapPins.house) {
+  } else if (typeValue === OFFER_TYPE[2] && priceValue >= mapPins.house) {
     isValid = true;
-  } else if (typeValue === OffetType.palace && priceValue >= mapPins.palace) {
+  } else if (typeValue === OFFER_TYPE[0] && priceValue >= mapPins.palace) {
     isValid = true;
   }
   return isValid;
 };
 
 const validateTypePrice = function () {
-  const typeValue = parseInt(typeElement.value, 10);
+  const typeValue = typeElement.value;
   const priceValue = parseInt(priceElement.value, 10);
 
   const isValid = isPriceValid(typeValue, priceValue);
 
-  const typeMessage = isValid ? `` : `Слишком маленькая цена`;
+  const typeMessage = isValid ? `` : `Не верная цена`;
   typeElement.setCustomValidity(typeMessage);
 };
 
@@ -344,24 +360,26 @@ const addFormEvents = function () {
     adForm.reportValidity();
   });
 };
+const publishForm = () => {
+  adForm.addEventListener(`change`, function (evt) {
+    switch (evt.target.id) {
+      case roomsElement.id:
+        validateRoomsCapacity();
+        break;
+      case capacityElement.id:
+        validateRoomsCapacity();
+        break;
+      case typeElement.id:
+        validateTypePrice();
+        break;
+      case priceElement.id:
+        validateTypePrice();
+        break;
+    }
+    adForm.reportValidity();
+  });
+};
 
-adForm.addEventListener(`change`, function (evt) {
-  switch (evt.target.id) {
-    case roomsElement.id:
-      validateRoomsCapacity();
-      break;
-    case capacityElement.id:
-      validateRoomsCapacity();
-      break;
-    case typeElement.id:
-      validateTypePrice();
-      break;
-    case priceElement.id:
-      validateTypePrice();
-      break;
-  }
-  adForm.reportValidity();
-});
 
 const addMapPinEvent = function () {
   mapPinMain.addEventListener(`mousedown`, function (evt) {
@@ -388,6 +406,8 @@ const activete = function () {
   isPageActive = true;
   changeElementsState();
   updateAddress();
+  rewritingPlaceholder();
+  publishForm();
 };
 
 const deactivate = function () {
