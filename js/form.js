@@ -1,0 +1,222 @@
+'use strict';
+(() => {
+
+  const MainPinSize = {
+    WIDTH: 65,
+    HEIGHT: 65,
+    AFTER: 22
+  };
+
+  const adForm = document.querySelector(`.ad-form`);
+  const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
+  const titleElement = adForm.querySelector(`#title`);
+  const typeElement = adForm.querySelector(`#type`);
+  const priceElement = adForm.querySelector(`#price`);
+  const roomsElement = adForm.querySelector(`#room_number`);
+  const capacityElement = adForm.querySelector(`#capacity`);
+  const addressInput = adForm.querySelector(`#address`);
+
+  const addFormEvent = function () {
+    adForm.addEventListener(`change`, function (evt) {
+      switch (evt.target.id) {
+        case roomsElement.id:
+          validateRoomsCapacity();
+          break;
+        case capacityElement.id:
+          validateRoomsCapacity();
+          break;
+        case typeElement.id:
+          validateTypePrice();
+          break;
+        case priceElement.id:
+          validateTypePrice();
+          break;
+      }
+      adForm.reportValidity();
+    });
+  };
+
+  const validateForm = function () {
+    validateRoomsCapacity();
+    validateTypePrice();
+    rewritingPlaceholder();
+    adForm.reportValidity();
+  };
+
+  const addTitleEvent = function () {
+    adForm.addEventListener(`input`, function (evt) {
+      switch (evt.target.id) {
+        case titleElement.id:
+          validateTitle();
+          break;
+      }
+      adForm.reportValidity();
+    });
+  };
+
+  const addEvents = function () {
+    addFormEvent();
+    addTitleEvent();
+  };
+
+  const getAddres = function () {
+    const valueX = window.map.mapPinMain.offsetLeft + Math.floor(MainPinSize.WIDTH / 2);
+    const valueY = window.map.mapPinMain.offsetTop + Math.floor((!window.map.getIsPageActive() ? MainPinSize.HEIGHT / 2 : MainPinSize.HEIGHT + MainPinSize.AFTER));
+
+    return {valueX, valueY};
+  };
+
+  const setAddres = function (valueX, valueY) {
+    addressInput.value = `${valueX}, ${valueY}`;
+  };
+
+  const updateAddress = function () {
+    const address = getAddres();
+    setAddres(address.valueX, address.valueY);
+  };
+
+  const changeState = function () {
+    updateAddress();
+
+    if (window.map.getIsPageActive()) {
+      adForm.classList.remove(`ad-form--disabled`);
+    } else {
+      adForm.classList.add(`ad-form--disabled`);
+    }
+
+    adFormFieldset.forEach(function (el) {
+      el.disabled = !window.map.getIsPageActive();
+    });
+  };
+
+  const initialize = function () {
+    changeState();
+    addEvents();
+    validateForm();
+    updateAddress();
+  };
+
+  // валидвация
+
+  const TitleLength = {
+    MIN: 30,
+    MAX: 100
+  };
+
+  const validateTitle = function () {
+    let valueLength = titleElement.value.length;
+    let message = ``;
+
+    if (valueLength < TitleLength.MIN) {
+      message = `Ещё ` + `${(TitleLength.MIN - valueLength)}` + ` симв.`;
+    } else if (valueLength > TitleLength.MAX) {
+      message = `Удалите лишние` + `${(valueLength - TitleLength.MAX)}` + `симв.`;
+    }
+
+    titleElement.setCustomValidity(message);
+  };
+
+  const TypeOffer = {
+    PALACE: `palace`,
+    FLAT: `flat`,
+    HOUSE: `house`,
+    BUNGALOW: `bungalow`
+  };
+
+  const MinPrice = {
+    PALACE: 10000,
+    FLAT: 1000,
+    HOUSE: 5000,
+    BUNGALOW: 0
+  };
+
+  const rewritingPlaceholder = function (typeValue) {
+    if (typeValue === TypeOffer.BUNGALOW) {
+      priceElement.setAttribute(`placeholder`, `${MinPrice.BUNGALOW}`);
+      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+    } else if (typeValue === TypeOffer.FLAT) {
+      priceElement.setAttribute(`placeholder`, `${MinPrice.FLAT}`);
+      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+    } else if (typeValue === TypeOffer.HOUSE) {
+      priceElement.setAttribute(`placeholder`, `${MinPrice.HOUSE}`);
+      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+    } else if (typeValue === TypeOffer.PALACE) {
+      priceElement.setAttribute(`placeholder`, `${MinPrice.PALACE}`);
+      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+    }
+  };
+
+
+  const isPriceValid = function (typeValue, priceValue) {
+    let isValid = false;
+    if (typeValue === TypeOffer.BUNGALOW && priceValue >= MinPrice.BUNGALOW) {
+      isValid = true;
+    } else if (typeValue === TypeOffer.FLAT && priceValue >= MinPrice.FLAT) {
+      isValid = true;
+    } else if (typeValue === TypeOffer.HOUSE && priceValue >= MinPrice.HOUSE) {
+      isValid = true;
+    } else if (typeValue === TypeOffer.PALACE && priceValue >= MinPrice.PALACE) {
+      isValid = true;
+    }
+    return isValid;
+  };
+
+
+  const Rooms = {
+    ONE: 1,
+    TWO: 2,
+    THREE: 3,
+    HUNDRED: 100
+  };
+
+  const Capacity = {
+    ONE: 1,
+    TWO: 2,
+    THREE: 3,
+    NOTFORGUEST: 0
+  };
+
+  const isRoomCapacityValid = function (roomsValue, capacityValue) {
+    let isValid = false;
+    if (roomsValue === Rooms.ONE && capacityValue === Capacity.ONE) {
+      isValid = true;
+    } else if (roomsValue === Rooms.TWO && (capacityValue === Capacity.ONE || capacityValue === Capacity.TWO)) {
+      isValid = true;
+    } else if (roomsValue === Rooms.THREE && (capacityValue === Capacity.ONE || capacityValue === Capacity.TWO || capacityValue === Capacity.THREE)) {
+      isValid = true;
+    } else if (roomsValue === Rooms.HUNDRED && capacityValue === Capacity.NOTFORGUEST) {
+      isValid = true;
+    }
+    return isValid;
+  };
+
+  const validateTypePrice = function () {
+    const typeValue = typeElement.value;
+    const priceValue = parseInt(priceElement.value, 10);
+
+    const isValid = isPriceValid(typeValue, priceValue);
+
+    const typeMessage = isValid ? `` : `Не верная цена`;
+    typeElement.setCustomValidity(typeMessage);
+  };
+
+  const validateRoomsCapacity = function () {
+    const roomsValue = parseInt(roomsElement.value, 10);
+    const capacityValue = parseInt(capacityElement.value, 10);
+
+    const isValid = isRoomCapacityValid(roomsValue, capacityValue);
+
+    const roomsMessage = isValid ? `` : `Не верное колличество комнат`;
+    roomsElement.setCustomValidity(roomsMessage);
+
+    const capacityMessage = isValid ? `` : `Не верное колличество гостей`;
+    capacityElement.setCustomValidity(capacityMessage);
+
+  };
+
+
+  window.form = {
+    changeState,
+    initialize
+  };
+})();
