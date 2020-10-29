@@ -1,42 +1,89 @@
 'use strict';
 (() => {
-  window.map.map = document.querySelector(`.map`);
-  const addressInput = window.form.adForm.querySelector(`#address`);
-
-  const mainPinSize = {
-    WIDTH: 65,
-    HEIGHT: 65,
-    AFTER: 22
-  };
+  const map = document.querySelector(`.map`);
+  const mapPinMain = document.querySelector(`.map__pin--main`);
+  const mapPins = document.querySelector(`.map__pins`);
 
   let isPageActive = false;
 
-  const getAddres = function () {
-    const valueX = window.pin.mapPinMain.offsetLeft + Math.floor(mainPinSize.WIDTH / 2);
-    const valueY = window.pin.mapPinMain.offsetTop + Math.floor((!isPageActive ? mainPinSize.HEIGHT / 2 : mainPinSize.HEIGHT + mainPinSize.AFTER));
-
-    return {valueX, valueY};
+  const MouseButton = {
+    LEFT: 1
   };
 
-  const setAddres = function (valueX, valueY) {
-    addressInput.value = `${valueX}, ${valueY}`;
+  const KeyboardButtons = {
+    ENTER: `Enter`,
+    ESCAPE: `Escape`
   };
 
-  const updateAddress = function () {
-    const address = getAddres();
-    setAddres(address.valueX, address.valueY);
+  const getIsPageActive = () => {
+    return isPageActive;
   };
 
-  const activete = function () {
+  const addPinEvent = (pinElement, bookingItem) => {
+    pinElement.addEventListener(`click`, function () {
+      map.appendChild(window.popup.getElement(bookingItem));
+    });
+  };
+
+  const render = function () {
+    const bookings = window.data.getBookings();
+    renderPins(bookings);
+  };
+
+  const renderPins = function (bookings) {
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < bookings.length; i++) {
+      const booking = bookings[i];
+      const pinElement = window.pin.getElement(booking);
+
+      addPinEvent(pinElement, booking);
+
+      fragment.appendChild(pinElement);
+    }
+
+    mapPins.appendChild(fragment);
+  };
+
+  const activate = function () {
+    if (isPageActive) {
+      return;
+    }
+
     isPageActive = true;
-    window.form.changeElementsState();
-    updateAddress();
-    window.validate.rewritingPlaceholder();
-    window.form.publishForm();
+    map.classList.remove(`map--faded`);
+    window.form.changeState();
+    render();
+    //  window.validate.rewritingPlaceholder();
+
+  };
+
+  const addEvents = function () {
+    mapPinMain.addEventListener(`mousedown`, function (evt) {
+      if (evt.which === MouseButton.LEFT) {
+        activate();
+      }
+    });
+
+    mapPinMain.addEventListener(`keydown`, function (evt) {
+      if (evt.key === KeyboardButtons.ENTER) {
+        activate();
+      }
+    });
+  };
+
+  // const reset = function () {
+  //   map.classList.add(`map--faded`);
+  // };
+
+  const initialize = function () {
+    addEvents();
   };
 
   window.map = {
-    activete,
-    updateAddress
+    activate,
+    getIsPageActive,
+    mapPinMain,
+    initialize
   };
 })();

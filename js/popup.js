@@ -9,14 +9,13 @@
     bungalow: `Бунгало`
   };
 
-  const keyboardButtons = {
-    Enter: `Enter`,
-    Escape: `Escape`
+  const keyboardButtonsEscape = {
+    ESCAPE: `Escape`
   };
 
   let cardElement = null;
 
-  const closePopup = () => {
+  const close = () => {
     if (cardElement !== null) {
       cardElement.remove();
       cardElement = null;
@@ -25,13 +24,13 @@
   };
 
   const onDocumentKeyDown = (evt) => {
-    if (evt.key === keyboardButtons.Escape) {
-      closePopup();
+    if (evt.key === keyboardButtonsEscape.ESCAPE) {
+      close();
     }
   };
 
-  const showPopup = function (bookingItem) {
-    closePopup();
+  const getElement = function (bookingItem) {
+    close();
     cardElement = cardTemplate.cloneNode(true);
     const featureElement = cardElement.querySelector(`.popup__features`);
     const photoElement = cardElement.querySelector(`.popup__photos`);
@@ -54,7 +53,7 @@
     document.addEventListener(`keydown`, onDocumentKeyDown);
 
     buttonClose.addEventListener(`click`, function () {
-      closePopup();
+      close();
     });
 
     return cardElement;
@@ -86,7 +85,6 @@
   };
 
   window.popup = {
-    closePopup,
-    showPopup
+    getElement
   };
 })();
