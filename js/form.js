@@ -38,7 +38,7 @@
 
   const validateForm = function () {
     validateRoomsCapacity();
-    //  validateTypePrice();
+    validateTypePrice();
     rewritingPlaceholder();
     adForm.reportValidity();
   };
