@@ -31,9 +31,9 @@
 
         const Limits = {
           TOP: 130 - window.form.MainPinSize.AFTER,
-          RIGHT: 1200 - Math.floor(window.form.MainPinSize.WIDTH),
+          RIGHT: 1200 - Math.floor(window.form.MainPinSize.WIDTH / 2),
           BOTTOM: 630,
-          LEFT: 0 + Math.floor(window.form.MainPinSize.WIDTH / 2)
+          LEFT: 0 - Math.floor(window.form.MainPinSize.WIDTH / 2)
         };
 
         if (window.map.mapPinMain.offsetTop < Limits.TOP) {
