@@ -90,6 +90,7 @@
     addEvents();
     validateForm();
     updateAddress();
+    window.moving.getTransformElement()
   };
 
   // валидвация
