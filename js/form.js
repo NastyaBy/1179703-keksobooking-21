@@ -215,6 +215,7 @@
 
   window.form = {
     changeState,
-    initialize
+    initialize,
+    getAddres
   };
 })();

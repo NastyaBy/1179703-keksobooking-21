@@ -28,6 +28,18 @@
 
         window.map.mapPinMain.style.top = (window.map.mapPinMain.offsetTop - shift.y) + `px`;
         window.map.mapPinMain.style.left = (window.map.mapPinMain.offsetLeft - shift.x) + `px`;
+
+        if (window.map.mapPinMain.offsetTop < top) {
+          window.map.mapPinMain.style.top = `${top}px`;
+        } else if (window.map.mapPinMain.offsetTop > bottom) {
+          window.map.mapPinMain.style.top = `${bottom}px`;
+        } else if (window.map.mapPinMain.offsetLeft < left) {
+          window.map.mapPinMain.style.left = `${left}px`;
+        } else if (window.map.mapPinMain.offsetLeft > right) {
+          window.map.mapPinMain.style.left = `${right}px`;
+        }
+
+        window.form.getAddres();
       };
 
       const onMouseUp = function (upEvt) {
@@ -48,7 +60,7 @@
       document.addEventListener(`mousemove`, onMouseMove);
       document.addEventListener(`mouseup`, onMouseUp);
     });
-  }
+  };
 
   window.moving = {
     getTransformElement
