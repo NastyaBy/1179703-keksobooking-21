@@ -81,7 +81,6 @@
 
       photoElement.appendChild(img);
     }
-
   };
 
   window.popup = {

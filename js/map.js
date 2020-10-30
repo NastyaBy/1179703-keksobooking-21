@@ -80,6 +80,7 @@
     addEvents();
   };
 
+
   window.map = {
     activate,
     getIsPageActive,
