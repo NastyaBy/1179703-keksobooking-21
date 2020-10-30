@@ -29,19 +29,21 @@
         window.map.mapPinMain.style.top = (window.map.mapPinMain.offsetTop - shift.y) + `px`;
         window.map.mapPinMain.style.left = (window.map.mapPinMain.offsetLeft - shift.x) + `px`;
 
-        const Top = {
-          MIN: 130,
-          MAX: 630
+        const Limits = {
+          TOP: 130,
+          RIGHT: ,
+          BOTTOM: 630,
+          LEFT:
         };
 
-        if (window.map.mapPinMain.offsetTop < Top.MIN) {
-          window.map.mapPinMain.style.top = `${Top.MIN}px`;
-        } else if (window.map.mapPinMain.offsetTop > Top.MAX) {
-          window.map.mapPinMain.style.top = `${Top.MAX}px`;
-        } else if (window.map.mapPinMain.offsetLeft < left) {
-          window.map.mapPinMain.style.left = `${left}px`;
-        } else if (window.map.mapPinMain.offsetLeft > right) {
-          window.map.mapPinMain.style.left = `${right}px`;
+        if (window.map.mapPinMain.offsetTop < Limits.TOP) {
+          window.map.mapPinMain.style.top = `${Limits.TOP}px`;
+        } else if (window.map.mapPinMain.offsetTop > Limits.BOTTOM) {
+          window.map.mapPinMain.style.top = `${Limits.BOTTOM}px`;
+        } else if (window.map.mapPinMain.offsetLeft < Limits.LEFT) {
+          window.map.mapPinMain.style.left = `${Limits.LEFT}px`;
+        } else if (window.map.mapPinMain.offsetLeft > Limits.RIGHT) {
+          window.map.mapPinMain.style.left = `${Limits.RIGHT}px`;
         }
 
         window.form.getAddres();
