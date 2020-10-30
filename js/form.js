@@ -216,6 +216,7 @@
   window.form = {
     changeState,
     initialize,
-    getAddres
+    getAddres,
+    MainPinSize
   };
 })();
