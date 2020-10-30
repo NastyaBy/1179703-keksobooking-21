@@ -27,6 +27,7 @@
           break;
         case typeElement.id:
           validateTypePrice();
+          rewritingPlaceholder();
           break;
         case priceElement.id:
           validateTypePrice();
@@ -39,17 +40,12 @@
   const validateForm = function () {
     validateRoomsCapacity();
     validateTypePrice();
-    rewritingPlaceholder();
     adForm.reportValidity();
   };
 
   const addTitleEvent = function () {
-    adForm.addEventListener(`input`, function (evt) {
-      switch (evt.target.id) {
-        case titleElement.id:
-          validateTitle();
-          break;
-      }
+    titleElement.addEventListener(`input`, function () {
+      validateTitle();
       adForm.reportValidity();
     });
   };
@@ -130,7 +126,9 @@
     BUNGALOW: 0
   };
 
-  const rewritingPlaceholder = function (typeValue) {
+  const rewritingPlaceholder = function () {
+    const typeValue = typeElement.value;
+
     if (typeValue === TypeOffer.BUNGALOW) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.BUNGALOW}`);
       priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
