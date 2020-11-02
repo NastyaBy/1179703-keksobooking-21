@@ -1,12 +1,6 @@
 'use strict';
 (() => {
 
-  const MainPinSize = {
-    WIDTH: 65,
-    HEIGHT: 65,
-    AFTER: 22
-  };
-
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
   const titleElement = adForm.querySelector(`#title`);
@@ -15,6 +9,8 @@
   const roomsElement = adForm.querySelector(`#room_number`);
   const capacityElement = adForm.querySelector(`#capacity`);
   const addressInput = adForm.querySelector(`#address`);
+  const timeInElement = adForm.querySelector(`#timein`);
+  const timeOffElement = adForm.querySelector(`#timeout`);
 
   const addFormEvent = function () {
     adForm.addEventListener(`change`, function (evt) {
@@ -27,9 +23,13 @@
           break;
         case typeElement.id:
           validateTypePrice();
+          rewritingPlaceholder();
           break;
         case priceElement.id:
           validateTypePrice();
+          break;
+        case timeInElement.id:
+          stayTime();
           break;
       }
       adForm.reportValidity();
@@ -39,18 +39,13 @@
   const validateForm = function () {
     validateRoomsCapacity();
     validateTypePrice();
-    rewritingPlaceholder();
     adForm.reportValidity();
   };
 
   const addTitleEvent = function () {
-    adForm.addEventListener(`input`, function (evt) {
-      switch (evt.target.id) {
-        case titleElement.id:
-          validateTitle();
-          break;
-      }
-      adForm.reportValidity();
+    titleElement.addEventListener(`input`, function () {
+      validateTitle();
+      // adForm.reportValidity();
     });
   };
 
@@ -59,24 +54,11 @@
     addTitleEvent();
   };
 
-  const getAddres = function () {
-    const valueX = window.map.mapPinMain.offsetLeft + Math.floor(MainPinSize.WIDTH / 2);
-    const valueY = window.map.mapPinMain.offsetTop + Math.floor((!window.map.getIsPageActive() ? MainPinSize.HEIGHT / 2 : MainPinSize.HEIGHT + MainPinSize.AFTER));
-
-    return {valueX, valueY};
-  };
-
   const setAddres = function (valueX, valueY) {
     addressInput.value = `${valueX}, ${valueY}`;
   };
 
-  const updateAddress = function () {
-    const address = getAddres();
-    setAddres(address.valueX, address.valueY);
-  };
-
   const changeState = function () {
-    updateAddress();
 
     if (window.map.getIsPageActive()) {
       adForm.classList.remove(`ad-form--disabled`);
@@ -93,7 +75,6 @@
     changeState();
     addEvents();
     validateForm();
-    updateAddress();
   };
 
   // валидвация
@@ -114,6 +95,7 @@
     }
 
     titleElement.setCustomValidity(message);
+    titleElement.reportValidity();
   };
 
   const TypeOffer = {
@@ -130,19 +112,21 @@
     BUNGALOW: 0
   };
 
-  const rewritingPlaceholder = function (typeValue) {
+  const rewritingPlaceholder = function () {
+    const typeValue = typeElement.value;
+
     if (typeValue === TypeOffer.BUNGALOW) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.BUNGALOW}`);
       priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
     } else if (typeValue === TypeOffer.FLAT) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.FLAT}`);
-      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+      priceElement.setAttribute(`min`, `${MinPrice.FLAT}`);
     } else if (typeValue === TypeOffer.HOUSE) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.HOUSE}`);
-      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+      priceElement.setAttribute(`min`, `${MinPrice.HOUSE}`);
     } else if (typeValue === TypeOffer.PALACE) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.PALACE}`);
-      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+      priceElement.setAttribute(`min`, `${MinPrice.PALACE}`);
     }
   };
 
@@ -160,7 +144,6 @@
     }
     return isValid;
   };
-
 
   const Rooms = {
     ONE: 1,
@@ -214,9 +197,37 @@
 
   };
 
+  const CheckInTime = {
+    TWELVE: `12:00`,
+    THIRTEEN: `13:00`,
+    FOURTEEN: `14:00`
+  };
+
+  const CheckOffTime = {
+    TWELVE: `12:00`,
+    THIRTEEN: `13:00`,
+    FOURTEEN: `14:00`
+  }
+
+
+
+  const stayTime = function () {
+    const timeInValue = timeInElement.value;
+    const timeOffValue = timeOffElement.value;
+
+    if (timeInValue === CheckInTime.TWELVE || timeOffValue === CheckOffTime.TWELVE) {
+      timeOffElement.setAttribute(`value`, `${CheckOffTime.TWELVE}`);
+    } else if (timeInValue === CheckInTime.THIRTEEN || timeOffValue === CheckOffTime.THIRTEEN) {
+      timeOffElement.setAttribute(`value`, `${CheckOffTime.THIRTEEN}`);
+    } else if (timeInValue === CheckInTime.FOURTEEN || timeOffValue === CheckOffTime.FOURTEEN) {
+      timeOffElement.setAttribute(`value`, `${CheckOffTime.FOURTEEN}`);
+    }
+  };
+
 
   window.form = {
     changeState,
-    initialize
+    initialize,
+    setAddres
   };
 })();

@@ -9,9 +9,7 @@
     bungalow: `Бунгало`
   };
 
-  const keyboardButtonsEscape = {
-    ESCAPE: `Escape`
-  };
+  const ESCAPE = `Escape`;
 
   let cardElement = null;
 
@@ -24,7 +22,7 @@
   };
 
   const onDocumentKeyDown = (evt) => {
-    if (evt.key === keyboardButtonsEscape.ESCAPE) {
+    if (evt.key === ESCAPE) {
       close();
     }
   };
@@ -81,7 +79,6 @@
 
       photoElement.appendChild(img);
     }
-
   };
 
   window.popup = {
