@@ -33,6 +33,12 @@
   };
 
   const getBookingItem = function () {
+
+    const location = {
+      x: getRandomNumber(31, 1169),
+      y: getRandomNumber(130, 630)
+    };
+
     return {
       author: {
         avatar: `img/avatars/user0${getRandomItem(SIZE_ARRAY)}.png`,
@@ -50,10 +56,7 @@
         description: getRandomItem(OFFER_DESCRIPTION),
         photos: getRandomItems(OFFER_PHOTOS)
       },
-      location: {
-        x: getRandomNumber(31, 1169),
-        y: getRandomNumber(130, 630)
-      },
+      location
     };
   };
 
