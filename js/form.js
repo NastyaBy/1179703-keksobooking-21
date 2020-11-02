@@ -1,12 +1,6 @@
 'use strict';
 (() => {
 
-  const MainPinSize = {
-    WIDTH: 65,
-    HEIGHT: 65,
-    AFTER: 22
-  };
-
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
   const titleElement = adForm.querySelector(`#title`);
@@ -46,7 +40,7 @@
   const addTitleEvent = function () {
     titleElement.addEventListener(`input`, function () {
       validateTitle();
-      adForm.reportValidity();
+      // adForm.reportValidity();
     });
   };
 
@@ -55,24 +49,11 @@
     addTitleEvent();
   };
 
-  const getAddres = function () {
-    const valueX = window.map.mapPinMain.offsetLeft + Math.floor(MainPinSize.WIDTH / 2);
-    const valueY = window.map.mapPinMain.offsetTop + Math.floor((!window.map.getIsPageActive() ? MainPinSize.HEIGHT / 2 : MainPinSize.HEIGHT + MainPinSize.AFTER));
-
-    return {valueX, valueY};
-  };
-
   const setAddres = function (valueX, valueY) {
     addressInput.value = `${valueX}, ${valueY}`;
   };
 
-  const updateAddress = function () {
-    const address = getAddres();
-    setAddres(address.valueX, address.valueY);
-  };
-
   const changeState = function () {
-    updateAddress();
 
     if (window.map.getIsPageActive()) {
       adForm.classList.remove(`ad-form--disabled`);
@@ -89,8 +70,6 @@
     changeState();
     addEvents();
     validateForm();
-    updateAddress();
-    window.moving.getTransformElement();
   };
 
   // валидвация
@@ -111,6 +90,7 @@
     }
 
     titleElement.setCustomValidity(message);
+    titleElement.reportValidity();
   };
 
   const TypeOffer = {
@@ -216,7 +196,6 @@
   window.form = {
     changeState,
     initialize,
-    getAddres,
-    MainPinSize
+    setAddres
   };
 })();
