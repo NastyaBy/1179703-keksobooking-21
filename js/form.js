@@ -192,6 +192,28 @@
 
   };
 
+  const CheckInTime = {
+    TWELVE: `12:00`,
+    THIRTEEN: `13:00`,
+    FOURTEEN: `14:00`
+  }
+
+
+  const stayTime = function () {
+    const typeValue = typeElement.value;
+
+    if (typeValue === CheckInTime.TWELVE) {
+
+
+    } else if (typeValue === CheckInTime.THIRTEEN) {
+
+
+    } else if (typeValue === CheckInTime.FOURTEEN) {
+
+
+    }
+  };
+
 
   window.form = {
     changeState,
