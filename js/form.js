@@ -9,6 +9,8 @@
   const roomsElement = adForm.querySelector(`#room_number`);
   const capacityElement = adForm.querySelector(`#capacity`);
   const addressInput = adForm.querySelector(`#address`);
+  const timeInElement = adForm.querySelector(`#timein`);
+  const timeOffElement = adForm.querySelector(`#timeout`);
 
   const addFormEvent = function () {
     adForm.addEventListener(`change`, function (evt) {
@@ -25,6 +27,9 @@
           break;
         case priceElement.id:
           validateTypePrice();
+          break;
+        case timeInElement.id:
+          stayTime();
           break;
       }
       adForm.reportValidity();
@@ -196,21 +201,26 @@
     TWELVE: `12:00`,
     THIRTEEN: `13:00`,
     FOURTEEN: `14:00`
+  };
+
+  const CheckOffTime = {
+    TWELVE: `12:00`,
+    THIRTEEN: `13:00`,
+    FOURTEEN: `14:00`
   }
 
 
+
   const stayTime = function () {
-    const typeValue = typeElement.value;
+    const timeInValue = timeInElement.value;
+    const timeOffValue = timeOffElement.value;
 
-    if (typeValue === CheckInTime.TWELVE) {
-
-
-    } else if (typeValue === CheckInTime.THIRTEEN) {
-
-
-    } else if (typeValue === CheckInTime.FOURTEEN) {
-
-
+    if (timeInValue === CheckInTime.TWELVE || timeOffValue === CheckOffTime.TWELVE) {
+      timeOffElement.setAttribute(`value`, `${CheckOffTime.TWELVE}`);
+    } else if (timeInValue === CheckInTime.THIRTEEN || timeOffValue === CheckOffTime.THIRTEEN) {
+      timeOffElement.setAttribute(`value`, `${CheckOffTime.THIRTEEN}`);
+    } else if (timeInValue === CheckInTime.FOURTEEN || timeOffValue === CheckOffTime.FOURTEEN) {
+      timeOffElement.setAttribute(`value`, `${CheckOffTime.FOURTEEN}`);
     }
   };
 
