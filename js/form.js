@@ -115,13 +115,13 @@
       priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
     } else if (typeValue === TypeOffer.FLAT) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.FLAT}`);
-      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+      priceElement.setAttribute(`min`, `${MinPrice.FLAT}`);
     } else if (typeValue === TypeOffer.HOUSE) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.HOUSE}`);
-      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+      priceElement.setAttribute(`min`, `${MinPrice.HOUSE}`);
     } else if (typeValue === TypeOffer.PALACE) {
       priceElement.setAttribute(`placeholder`, `${MinPrice.PALACE}`);
-      priceElement.setAttribute(`min`, `${MinPrice.BUNGALOW}`);
+      priceElement.setAttribute(`min`, `${MinPrice.PALACE}`);
     }
   };
 
