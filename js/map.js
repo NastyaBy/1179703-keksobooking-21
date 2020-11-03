@@ -31,8 +31,21 @@
   };
 
   const onLoadEroor = function (message) {
-  <div> Ошибка при попытке загрузки данных </div>
-    style="position: absolute; width:100% height: 40px; line-height:40px; text-align:center; color:red;"
+    const errorElement = document.createElement(`div`);
+    errorElement.innerText = `Ошибка при попытке загрузки данных`;
+    errorElement.style.position = `absolute`;
+    errorElement.style.width = `100%`;
+    errorElement.style.height = `40px`;
+    errorElement.style.textAlign = `center`;
+    errorElement.style.backgroundColor = `#ff000021`;
+    errorElement.style.borderWidth = `1px`;
+    errorElement.style.borderStyle = `solid`;
+    errorElement.style.borderColor = `red`;
+    errorElement.style.lineHeight = `40px`;
+    errorElement.style.top = `100px`;
+    errorElement.style.color = `red`;
+
+    map.appendChild(errorElement);
   };
 
   const activate = function () {
