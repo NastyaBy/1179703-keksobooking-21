@@ -15,24 +15,23 @@
     });
   };
 
-  const render = function () {
-    const bookings = window.data.getBookings();
-    renderPins(bookings);
-  };
+  const renderPins = function () {
+    window.server.load(function (bookings) {
+      const fragment = document.createDocumentFragment();
 
-  const renderPins = function (bookings) {
-    const fragment = document.createDocumentFragment();
+      for (let i = 0; i < bookings.length; i++) {
+        const booking = bookings[i];
+        const pinElement = window.pin.getElement(booking);
 
-    for (let i = 0; i < bookings.length; i++) {
-      const booking = bookings[i];
-      const pinElement = window.pin.getElement(booking);
+        addPinEvent(pinElement, booking);
 
-      addPinEvent(pinElement, booking);
+        fragment.appendChild(pinElement);
+      }
 
-      fragment.appendChild(pinElement);
-    }
-
-    mapPins.appendChild(fragment);
+      mapPins.appendChild(fragment);
+    }, function () {
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    });
   };
 
   const activate = function () {
@@ -44,7 +43,7 @@
     map.classList.remove(`map--faded`);
     window.form.changeState();
     window.moving.updateAddress();
-    render();
+    renderPins();
   };
 
   window.map = {
