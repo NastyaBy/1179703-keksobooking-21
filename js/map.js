@@ -30,7 +30,7 @@
     mapPins.appendChild(fragment);
   };
 
-  const onLoadEroor = function (message) {
+  const onLoadEroor = function () {
     const errorElement = document.createElement(`div`);
     errorElement.innerText = `Ошибка при попытке загрузки данных`;
     errorElement.style.position = `absolute`;
