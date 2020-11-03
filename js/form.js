@@ -48,7 +48,6 @@
   const addTitleEvent = function () {
     titleElement.addEventListener(`input`, function () {
       validateTitle();
-      // adForm.reportValidity();
     });
   };
 
@@ -79,8 +78,6 @@
     addEvents();
     validateForm();
   };
-
-  // валидвация
 
   const TitleLength = {
     MIN: 30,
@@ -197,42 +194,7 @@
 
     const capacityMessage = isValid ? `` : `Не верное колличество гостей`;
     capacityElement.setCustomValidity(capacityMessage);
-
   };
-  //
-  // const CheckInTime = {
-  //   TWELVE: `12:00`,
-  //   THIRTEEN: `13:00`,
-  //   FOURTEEN: `14:00`
-  // };
-  //
-  // const CheckOffTime = {
-  //   TWELVE: `12:00`,
-  //   THIRTEEN: `13:00`,
-  //   FOURTEEN: `14:00`
-  // }
-
-
-  // const stayTime = (value) => {
-  //   const timeInSelect.value = value;
-  //   const timeOutSelect.value = value;
-
-  // console.log(timeInValue);
-  // console.log(timeOffValue);
-  // if (timeInValue === CheckInTime.TWELVE) {
-  //   timeOutSelect.textContent = `${CheckOffTime.TWELVE}`;
-  // } else if (timeInValue === CheckInTime.THIRTEEN) {
-  //   timeOutSelect.textContent = `${CheckOffTime.THIRTEEN}`;
-  // } else if (timeInValue === CheckInTime.FOURTEEN) {
-  //   timeOutSelect.textContent = `${CheckOffTime.FOURTEEN}`;
-  // } else if (timeOffValue === CheckOffTime.TWELVE) {
-  //   timeInSelect.textContent = `${CheckInTime.TWELVE}`;
-  // } else if (timeOffValue === CheckOffTime.THIRTEEN) {
-  //   timeInSelect.textContent = `${CheckInTime.THIRTEEN}`;
-  // } else if (timeOffValue === CheckOffTime.FOURTEEN) {
-  //   timeInSelect.textContent = `${CheckInTime.FOURTEEN}`;
-  // }
-  // };
 
   const changeTimeOutValue = (value) => {
     timeOutSelect.value = value;

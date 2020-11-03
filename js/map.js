@@ -45,37 +45,10 @@
     window.form.changeState();
     window.moving.updateAddress();
     render();
-    //  window.validate.rewritingPlaceholder();
-
   };
-
-  // const addEvents = function () {
-  //   mapPinMain.addEventListener(`mousedown`, function (evt) {
-  //     if (evt.which === MouseButton.LEFT) {
-  //       activate();
-  //     }
-  //   });
-
-  //   mapPinMain.addEventListener(`keydown`, function (evt) {
-  //     if (evt.key === KeyboardButtons.ENTER) {
-  //       activate();
-  //     }
-  //   });
-  // };
-
-  // const reset = function () {
-  //   map.classList.add(`map--faded`);
-  // };
-
-  // const initialize = function () {
-  //   addEvents();
-  // };
-
 
   window.map = {
     activate,
     getIsPageActive,
-    // mapPinMain,
-    // initialize
   };
 })();

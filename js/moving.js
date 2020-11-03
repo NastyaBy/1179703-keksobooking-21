@@ -11,13 +11,6 @@
     AFTER: 22
   };
 
-  // const Limits = {
-  //   TOP: 130 - MainPinSize.AFTER,
-  //   RIGHT: 1200 - Math.floor(MainPinSize.WIDTH / 2),
-  //   BOTTOM: 630,
-  //   LEFT: 0 - Math.floor(MainPinSize.WIDTH / 2)
-  // };
-
   const ENTER = `Enter`;
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
@@ -86,18 +79,6 @@
 
           window.form.setAddres(valueX, valueY);
         }
-
-        // if (mapPinMain.offsetTop < Limits.TOP) {
-        //   mapPinMain.style.top = `${Limits.TOP}px`;
-        // } else if (mapPinMain.offsetTop > Limits.BOTTOM) {
-        //   mapPinMain.style.top = `${Limits.BOTTOM}px`;
-        // } else if (mapPinMain.offsetLeft < Limits.LEFT) {
-        //   mapPinMain.style.left = `${Limits.LEFT}px`;
-        // } else if (mapPinMain.offsetLeft > Limits.RIGHT) {
-        //   mapPinMain.style.left = `${Limits.RIGHT}px`;
-        // }
-
-        // window.form.getAddres();
       };
 
       const onMouseUp = function (upEvt) {
