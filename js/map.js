@@ -15,23 +15,24 @@
     });
   };
 
-  const renderPins = function () {
-    window.server.load(function (bookings) {
-      const fragment = document.createDocumentFragment();
+  const renderPins = function (bookings) {
+    const fragment = document.createDocumentFragment();
 
-      for (let i = 0; i < bookings.length; i++) {
-        const booking = bookings[i];
-        const pinElement = window.pin.getElement(booking);
+    for (let i = 0; i < bookings.length; i++) {
+      const booking = bookings[i];
+      const pinElement = window.pin.getElement(booking);
 
-        addPinEvent(pinElement, booking);
+      addPinEvent(pinElement, booking);
 
-        fragment.appendChild(pinElement);
-      }
+      fragment.appendChild(pinElement);
+    }
 
-      mapPins.appendChild(fragment);
-    }, function (message) {
-      console.error(message);
-    });
+    mapPins.appendChild(fragment);
+  };
+
+  const onLoadEroor = function (message) {
+  <div> Ошибка при попытке загрузки данных </div>
+    style="position: absolute; width:100% height: 40px; line-height:40px; text-align:center; color:red;"
   };
 
   const activate = function () {
@@ -43,7 +44,7 @@
     map.classList.remove(`map--faded`);
     window.form.changeState();
     window.moving.updateAddress();
-    renderPins();
+    window.server.load(renderPins, onLoadEroor);
   };
 
   window.map = {
