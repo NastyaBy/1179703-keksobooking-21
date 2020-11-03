@@ -29,8 +29,8 @@
       }
 
       mapPins.appendChild(fragment);
-    }, function () {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    }, function (message) {
+      console.error(message);
     });
   };
 
