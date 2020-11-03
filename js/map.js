@@ -15,11 +15,6 @@
     });
   };
 
-  const render = function () {
-    const bookings = window.data.getBookings();
-    renderPins(bookings);
-  };
-
   const renderPins = function (bookings) {
     const fragment = document.createDocumentFragment();
 
@@ -35,6 +30,24 @@
     mapPins.appendChild(fragment);
   };
 
+  const onLoadEroor = function () {
+    const errorElement = document.createElement(`div`);
+    errorElement.innerText = `Ошибка при попытке загрузки данных`;
+    errorElement.style.position = `absolute`;
+    errorElement.style.width = `100%`;
+    errorElement.style.height = `40px`;
+    errorElement.style.textAlign = `center`;
+    errorElement.style.backgroundColor = `#ff000021`;
+    errorElement.style.borderWidth = `1px`;
+    errorElement.style.borderStyle = `solid`;
+    errorElement.style.borderColor = `red`;
+    errorElement.style.lineHeight = `40px`;
+    errorElement.style.top = `100px`;
+    errorElement.style.color = `red`;
+
+    map.appendChild(errorElement);
+  };
+
   const activate = function () {
     if (isPageActive) {
       return;
@@ -44,38 +57,11 @@
     map.classList.remove(`map--faded`);
     window.form.changeState();
     window.moving.updateAddress();
-    render();
-    //  window.validate.rewritingPlaceholder();
-
+    window.server.load(renderPins, onLoadEroor);
   };
-
-  // const addEvents = function () {
-  //   mapPinMain.addEventListener(`mousedown`, function (evt) {
-  //     if (evt.which === MouseButton.LEFT) {
-  //       activate();
-  //     }
-  //   });
-
-  //   mapPinMain.addEventListener(`keydown`, function (evt) {
-  //     if (evt.key === KeyboardButtons.ENTER) {
-  //       activate();
-  //     }
-  //   });
-  // };
-
-  // const reset = function () {
-  //   map.classList.add(`map--faded`);
-  // };
-
-  // const initialize = function () {
-  //   addEvents();
-  // };
-
 
   window.map = {
     activate,
     getIsPageActive,
-    // mapPinMain,
-    // initialize
   };
 })();

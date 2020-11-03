@@ -9,8 +9,8 @@
   const roomsElement = adForm.querySelector(`#room_number`);
   const capacityElement = adForm.querySelector(`#capacity`);
   const addressInput = adForm.querySelector(`#address`);
-  const timeInElement = adForm.querySelector(`#timein`);
-  const timeOffElement = adForm.querySelector(`#timeout`);
+  const timeInSelect = adForm.querySelector(`#timein`);
+  const timeOutSelect = adForm.querySelector(`#timeout`);
 
   const addFormEvent = function () {
     adForm.addEventListener(`change`, function (evt) {
@@ -28,8 +28,11 @@
         case priceElement.id:
           validateTypePrice();
           break;
-        case timeInElement.id:
-          stayTime();
+        case timeInSelect.id:
+          changeTimeOutValue(evt.target.value);
+          break;
+        case timeOutSelect.id:
+          changeTimeInValue(evt.target.value);
           break;
       }
       adForm.reportValidity();
@@ -45,7 +48,6 @@
   const addTitleEvent = function () {
     titleElement.addEventListener(`input`, function () {
       validateTitle();
-      // adForm.reportValidity();
     });
   };
 
@@ -76,8 +78,6 @@
     addEvents();
     validateForm();
   };
-
-  // валидвация
 
   const TitleLength = {
     MIN: 30,
@@ -194,35 +194,17 @@
 
     const capacityMessage = isValid ? `` : `Не верное колличество гостей`;
     capacityElement.setCustomValidity(capacityMessage);
-
   };
 
-  const CheckInTime = {
-    TWELVE: `12:00`,
-    THIRTEEN: `13:00`,
-    FOURTEEN: `14:00`
+  const changeTimeOutValue = (value) => {
+    timeOutSelect.value = value;
   };
 
-  const CheckOffTime = {
-    TWELVE: `12:00`,
-    THIRTEEN: `13:00`,
-    FOURTEEN: `14:00`
-  }
-
-
-
-  const stayTime = function () {
-    const timeInValue = timeInElement.value;
-    const timeOffValue = timeOffElement.value;
-
-    if (timeInValue === CheckInTime.TWELVE || timeOffValue === CheckOffTime.TWELVE) {
-      timeOffElement.setAttribute(`value`, `${CheckOffTime.TWELVE}`);
-    } else if (timeInValue === CheckInTime.THIRTEEN || timeOffValue === CheckOffTime.THIRTEEN) {
-      timeOffElement.setAttribute(`value`, `${CheckOffTime.THIRTEEN}`);
-    } else if (timeInValue === CheckInTime.FOURTEEN || timeOffValue === CheckOffTime.FOURTEEN) {
-      timeOffElement.setAttribute(`value`, `${CheckOffTime.FOURTEEN}`);
-    }
+  const changeTimeInValue = (value) => {
+    timeInSelect.value = value;
   };
+
+  changeTimeOutValue(timeInSelect.value);
 
 
   window.form = {
