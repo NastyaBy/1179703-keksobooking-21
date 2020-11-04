@@ -83,10 +83,13 @@
   };
 
   const getServerRequest = function () {
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = `json`;
+
     xhr.open(`POST`, UrlSaveData);
     successMessage();
     errorMessage();
-    new FormData(window.form.adForm);
+   // new FormData(window.form.adForm);
   };
 
 
