@@ -230,7 +230,7 @@
     roomPrice: 5000,
     numberOfRooms: 1,
     timeInSelect: `12:00`,
-    guestsValue: 1
+    guestsValue: 3
   };
 
 
@@ -257,6 +257,6 @@
     changeState,
     initialize,
     setAddres,
-    adForm
+    adForm,
   };
 })();

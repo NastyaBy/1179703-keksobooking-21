@@ -13,7 +13,7 @@
     const newErrMessage = errorTemplate.cloneNode(true);
     newErrMessage.querySelector(`.error__message`).textContent = errorText;
     errorFragment.appendChild(newErrMessage);
-    window.form.mapPins.appendChild(errorFragment);
+    window.map.mapPins.appendChild(errorFragment);
     const errorButton = newErrMessage.querySelector(`button`);
     const onErrorButtonClick = () => {
       newErrMessage.remove();
