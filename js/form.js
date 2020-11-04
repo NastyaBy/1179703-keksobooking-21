@@ -11,6 +11,13 @@
   const addressInput = adForm.querySelector(`#address`);
   const timeInSelect = adForm.querySelector(`#timein`);
   const timeOutSelect = adForm.querySelector(`#timeout`);
+  const description = adForm.querySelector(`#description`);
+  const adPhoto = adForm.querySelector(`#images`);
+  const adAvatar = adForm.querySelector(`#avatar`);
+  const featuresCheckboxes = adForm.querySelectorAll(`.feature__checkbox`);
+  const resetForm = adForm.querySelector(`.ad-form__reset`);
+  const submitForm = adForm.querySelector(`.ad-form__submit`);
+
 
   const addFormEvent = function () {
     adForm.addEventListener(`change`, function (evt) {
@@ -38,6 +45,17 @@
       adForm.reportValidity();
     });
   };
+
+  submitForm.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    window.server.getServerRequest();
+  });
+
+  resetForm.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    addFormEvent();
+    getResetForm();
+  });
 
   const validateForm = function () {
     validateRoomsCapacity();
@@ -206,10 +224,39 @@
 
   changeTimeOutValue(timeInSelect.value);
 
+  const baseline = {
+    title: ``,
+    roomTypeValue: `flat`,
+    roomPrice: 5000,
+    numberOfRooms: 1,
+    timeInSelect: `12:00`,
+    guestsValue: 1
+  };
+
+
+  const getResetForm = () => {
+    titleElement.value = ``;
+    typeElement.value = baseline.roomTypeValue;
+    roomsElement.value = baseline.numberOfRooms;
+    priceElement.value = ``;
+    priceElement.placeholder = baseline.roomPrice;
+    description.value = ``;
+    timeInSelect.value = baseline.timeInSelect;
+    timeOutSelect.value = timeInSelect.value;
+    capacityElement.value = baseline.guestsValue;
+    adPhoto.value = ``;
+    adAvatar.value = ``;
+    window.map.removeCardPopup();
+    featuresCheckboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+  };
+
 
   window.form = {
     changeState,
     initialize,
-    setAddres
+    setAddres,
+    adForm
   };
 })();

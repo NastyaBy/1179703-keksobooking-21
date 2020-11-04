@@ -60,8 +60,33 @@
     window.server.load(renderPins, onLoadEroor);
   };
 
+  const unactivatePin = () => {
+    const mapPin = mapPins.querySelectorAll(`.map__pin`);
+    mapPin.forEach((pin) => {
+      pin.classList.remove(`map__pin--active`);
+    });
+  };
+
+  const onPopupEscPress = (evt) => {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      removeCardPopup(map.querySelector(`.map__card.popup`));
+      unactivatePin();
+    }
+  };
+
+  const removeCardPopup = () => {
+    if (map.querySelector(`.map__card.popup`)) {
+      map.querySelector(`.map__card.popup`).remove();
+      document.removeEventListener(`keydown`, onPopupEscPress);
+    }
+  };
+
+
   window.map = {
     activate,
     getIsPageActive,
+    mapPins,
+    removeCardPopup
   };
 })();
