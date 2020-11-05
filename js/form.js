@@ -11,12 +11,10 @@
   const addressInput = adForm.querySelector(`#address`);
   const timeInSelect = adForm.querySelector(`#timein`);
   const timeOutSelect = adForm.querySelector(`#timeout`);
-  const description = adForm.querySelector(`#description`);
-  const adPhoto = adForm.querySelector(`#images`);
-  const adAvatar = adForm.querySelector(`#avatar`);
-  const featuresCheckboxes = adForm.querySelectorAll(`.feature__checkbox`);
-  const resetForm = adForm.querySelector(`.ad-form__reset`);
-  const submitForm = adForm.querySelector(`.ad-form__submit`);
+  // const description = adForm.querySelector(`#description`);
+  // const adPhoto = adForm.querySelector(`#images`);
+  // const adAvatar = adForm.querySelector(`#avatar`);
+  // const featuresCheckboxes = adForm.querySelectorAll(`.feature__checkbox`);
 
 
   const addFormEvent = function () {
@@ -46,16 +44,6 @@
     });
   };
 
-  submitForm.addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    window.server.getServerRequest();
-  });
-
-  resetForm.addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    addFormEvent();
-    getResetForm();
-  });
 
   const validateForm = function () {
     validateRoomsCapacity();
@@ -224,32 +212,107 @@
 
   changeTimeOutValue(timeInSelect.value);
 
-  const baseline = {
-    title: ``,
-    roomTypeValue: `flat`,
-    roomPrice: 5000,
-    numberOfRooms: 1,
-    timeInSelect: `12:00`,
-    guestsValue: 3
+
+  const resetForm = adForm.querySelector(`.ad-form__reset`);
+  const submitForm = adForm.querySelector(`.ad-form__submit`);
+
+  submitForm.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+
+    successMessage();
+  });
+
+  resetForm.addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    addFormEvent();
+    getResetForm();
+  });
+
+
+  const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
+  const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
+
+  const ESCAPE = `Escape`;
+
+  const MouseButton = {
+    BASIC : 0
+
+  };
+  const newErrMessage = errorTemplate.cloneNode(true);
+  const errorButton = newErrMessage.querySelector(`button`);
+  let errorFragment = null;
+
+  const onErrorButtonClick = () => {
+    if (errorFragment) {
+      newErrMessage.remove();
+      errorButton.removeEventListener(`click`, onErrorButtonClick);
+      errorFragment = null;
+    }
+  };
+  const showErrorModal = (errorText) => {
+    newErrMessage.querySelector(`.error__message`).textContent = errorText;
+    errorFragment.appendChild(newErrMessage);
+    window.map.mapPins.appendChild(errorFragment);
+  };
+
+  const errorMessage = () => {
+    let errorFragment = document.createDocumentFragment();
+    onErrorButtonClick();
+    errorButton.addEventListener(`click`, onErrorButtonClick);
+  };
+
+  const successMessage = () => {
+    const successFragment = document.createDocumentFragment();
+    const newSuccessMessage = successTemplate.cloneNode(true);
+    successFragment.appendChild(newSuccessMessage);
+    document.querySelector(`main`).appendChild(successFragment);
+
+   adForm.reset();
+
+    addFormEvent();
+    window.moving.initialize();
+
+
+    const outOfSuccessMessage = () => {
+      return (evt) => {
+        if (evt.code === ESCAPE || evt.button === MouseButton.BASIC) {
+          newSuccessMessage.remove();
+          document.removeEventListener(`click`, outOfSuccessMessage());
+          document.removeEventListener(`keydown`, outOfSuccessMessage());
+        }
+      };
+    };
+    document.addEventListener(`click`, outOfSuccessMessage());
+    document.addEventListener(`keydown`, outOfSuccessMessage());
   };
 
 
+  // const baseline = {
+  //   title: ``,
+  //   roomTypeValue: `flat`,
+  //   roomPrice: 5000,
+  //   numberOfRooms: 1,
+  //   timeInSelect: `12:00`,
+  //   guestsValue: 3
+  // };
+
+
   const getResetForm = () => {
-    titleElement.value = ``;
-    typeElement.value = baseline.roomTypeValue;
-    roomsElement.value = baseline.numberOfRooms;
-    priceElement.value = ``;
-    priceElement.placeholder = baseline.roomPrice;
-    description.value = ``;
-    timeInSelect.value = baseline.timeInSelect;
-    timeOutSelect.value = timeInSelect.value;
-    capacityElement.value = baseline.guestsValue;
-    adPhoto.value = ``;
-    adAvatar.value = ``;
-    window.map.removeCardPopup();
-    featuresCheckboxes.forEach((checkbox) => {
-      checkbox.checked = false;
-    });
+    // titleElement.value = ``;
+    // typeElement.value = baseline.roomTypeValue;
+    // roomsElement.value = baseline.numberOfRooms;
+    // priceElement.value = ``;
+    // priceElement.placeholder = baseline.roomPrice;
+    // description.value = ``;
+    // timeInSelect.value = baseline.timeInSelect;
+    // timeOutSelect.value = timeInSelect.value;
+    // capacityElement.value = baseline.guestsValue;
+    // adPhoto.value = ``;
+    // adAvatar.value = ``;
+    // window.map.removeCardPopup();
+    // featuresCheckboxes.forEach((checkbox) => {
+    //   checkbox.checked = false;
+    // });
   };
 
 
@@ -257,6 +320,6 @@
     changeState,
     initialize,
     setAddres,
-    adForm,
+    adForm
   };
 })();
