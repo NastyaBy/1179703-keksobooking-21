@@ -213,21 +213,26 @@
   changeTimeOutValue(timeInSelect.value);
 
 
+  // 6.12
+
   const resetForm = adForm.querySelector(`.ad-form__reset`);
   const submitForm = adForm.querySelector(`.ad-form__submit`);
 
   submitForm.addEventListener(`click`, (evt) => {
     evt.preventDefault();
-
-    successMessage();
+    addFormEvent();
+    if (addFormEvent()) {
+      window.server.load(successMessage, errorMessage, new FormData(adForm));
+    } else {
+      errorMessage();
+      showErrorModal();
+    }
   });
 
   resetForm.addEventListener(`click`, (evt) => {
     evt.preventDefault();
-    addFormEvent();
     getResetForm();
   });
-
 
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
@@ -235,11 +240,11 @@
   const ESCAPE = `Escape`;
 
   const MouseButton = {
-    BASIC : 0
-
+    BASIC: 0
   };
   const newErrMessage = errorTemplate.cloneNode(true);
   const errorButton = newErrMessage.querySelector(`button`);
+
   let errorFragment = null;
 
   const onErrorButtonClick = () => {
@@ -256,8 +261,9 @@
   };
 
   const errorMessage = () => {
-    let errorFragment = document.createDocumentFragment();
+    // let errorFragment = document.createDocumentFragment();
     onErrorButtonClick();
+    showErrorModal();
     errorButton.addEventListener(`click`, onErrorButtonClick);
   };
 
@@ -266,11 +272,11 @@
     const newSuccessMessage = successTemplate.cloneNode(true);
     successFragment.appendChild(newSuccessMessage);
     document.querySelector(`main`).appendChild(successFragment);
-
-   adForm.reset();
+    adForm.reset();
 
     addFormEvent();
     window.moving.initialize();
+    initialize();
 
 
     const outOfSuccessMessage = () => {
@@ -286,33 +292,9 @@
     document.addEventListener(`keydown`, outOfSuccessMessage());
   };
 
-
-  // const baseline = {
-  //   title: ``,
-  //   roomTypeValue: `flat`,
-  //   roomPrice: 5000,
-  //   numberOfRooms: 1,
-  //   timeInSelect: `12:00`,
-  //   guestsValue: 3
-  // };
-
-
   const getResetForm = () => {
-    // titleElement.value = ``;
-    // typeElement.value = baseline.roomTypeValue;
-    // roomsElement.value = baseline.numberOfRooms;
-    // priceElement.value = ``;
-    // priceElement.placeholder = baseline.roomPrice;
-    // description.value = ``;
-    // timeInSelect.value = baseline.timeInSelect;
-    // timeOutSelect.value = timeInSelect.value;
-    // capacityElement.value = baseline.guestsValue;
-    // adPhoto.value = ``;
-    // adAvatar.value = ``;
-    // window.map.removeCardPopup();
-    // featuresCheckboxes.forEach((checkbox) => {
-    //   checkbox.checked = false;
-    // });
+    initialize();
+    window.popup.getElement();
   };
 
 
