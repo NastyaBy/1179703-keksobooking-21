@@ -75,6 +75,20 @@
     }
   };
 
+
+  const mapFiltersContainer = map.querySelector(`.map__filters-container`);
+  const mapFilters = mapFiltersContainer.querySelector(`.map__filters`);
+  const mapFiltersElements = mapFilters.children;
+
+  const setDisabledElements = (disabledArrayn) => {
+    for (const element of disabledArray) {
+      element.disabled = true;
+    }
+  };
+
+
+
+
   const removeCardPopup = () => {
     if (map.querySelector(`.map__card.popup`)) {
       map.querySelector(`.map__card.popup`).remove();
@@ -88,5 +102,7 @@
     getIsPageActive,
     mapPins,
     removeCardPopup,
+    setDisabledElements,
+    mapFiltersElements,
   };
 })();

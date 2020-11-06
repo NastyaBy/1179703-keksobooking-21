@@ -215,21 +215,15 @@
 
   // 6.12
 
-  const resetForm = adForm.querySelector(`.ad-form__reset`);
-  const submitForm = adForm.querySelector(`.ad-form__submit`);
+  // const resetForm = adForm.querySelector(`.ad-form__reset`);
+  // const submitForm = adForm.querySelector(`.ad-form__submit`);
 
-  submitForm.addEventListener(`click`, (evt) => {
+  adForm.addEventListener(`submit`, (evt) => {
     evt.preventDefault();
-    addFormEvent();
-    if (addFormEvent()) {
-      window.server.load(successMessage, errorMessage, new FormData(adForm));
-    } else {
-      errorMessage();
-      showErrorModal();
-    }
+    window.server.update(successMessage, errorMessage, new FormData(adForm));
   });
 
-  resetForm.addEventListener(`click`, (evt) => {
+  adForm.addEventListener(`reset`, (evt) => {
     evt.preventDefault();
     getResetForm();
   });
@@ -293,8 +287,11 @@
   };
 
   const getResetForm = () => {
-    initialize();
-    window.popup.getElement();
+    changeState();
+    window.map.setDisabledElements(mapFiltersElements);
+    window.map.removeCardPopup();
+    adForm.classList.add(`ad-form--disabled`);
+    adForm.reset();
   };
 
 
