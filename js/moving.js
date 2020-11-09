@@ -11,7 +11,7 @@
     AFTER: 22
   };
 
-  const mapPinMainCoords = {
+  const MapPinMainCoords = {
     LEFT: `570px`,
     TOP: `375px`
   };
@@ -107,8 +107,8 @@
   };
 
   const reset = () => {
-    mapPinMain.style.top = mapPinMainCoords.TOP;
-    mapPinMain.style.left = mapPinMainCoords.LEFT;
+    mapPinMain.style.top = MapPinMainCoords.TOP;
+    mapPinMain.style.left = MapPinMainCoords.LEFT;
     updateAddress();
   };
 

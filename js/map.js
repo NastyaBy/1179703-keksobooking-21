@@ -7,9 +7,15 @@
   const mapFiltersSelects = mapFilters.querySelectorAll(`select`);
   const mapFiltersFieldsets = mapFilters.querySelectorAll(`fieldset`);
   const mapFiltersElements = [...mapFiltersSelects, ...mapFiltersFieldsets];
-  const NUMBER_OF_PIN = 5;
+
+  const housingTypeFilter = mapFilters.querySelector(`#housing-type`);
+  const housingPriceFilter = mapFilters.querySelector(`#housing-price`);
+  const housingRoomsFilter = mapFilters.querySelector(`#housing-rooms`);
+  const housingGuestsFilter = mapFilters.querySelector(`#housing-guests`);
+  const housingFeaturesList = mapFilters.querySelectorAll(`input:checked`);
 
   let pins = [];
+  let bookings = [];
 
   let isPageActive = false;
 
@@ -23,16 +29,39 @@
     });
   };
 
-  const renderPins = function (bookings) {
-    const fragment = document.createDocumentFragment();
-    let bookingsCount;
-    if (bookings.length > NUMBER_OF_PIN) {
-      bookingsCount = NUMBER_OF_PIN;
-    } else {
-      bookingsCount = bookings.length;
-    }
+  const addFilterEvent = function () {
+    mapFilters.addEventListener(`change`, function (evt) {
+      showPins();
+    });
+    //   switch (evt.target.value) {
+    //     case housingTypeFilter.value:
+    //       filterPinsByType();
+    //       break;
+    //     case housingPriceFilter.value:
+    //       filterPinsByPrice();
+    //       break;
+    //     case housingRoomsFilter.value:
+    //       filterPinsByRooms();
+    //       break;
+    //     case housingGuestsFilter.value:
+    //       filterPinsByGuests();
+    //       break;
+    //   }
+    // });
+  };
 
-    for (let i = 0; i < bookingsCount; i++) {
+  const showPins = () => {
+    //  debugger;
+    const filtredPins = window.filter.getFiltredBookings(bookings, housingTypeFilter.value, housingPriceFilter.value, housingRoomsFilter.value, housingGuestsFilter.value);
+    renderPins(filtredPins);
+  };
+
+  const renderPins = function (bookings) {
+    removePins();
+
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < bookings.length; i++) {
       const booking = bookings[i];
       const pinElement = window.pin.getElement(booking);
       pins.push(pinElement);
@@ -43,6 +72,12 @@
     }
 
     mapPins.appendChild(fragment);
+  };
+
+
+  const onLoadSuccess = (items) => {
+    bookings = items;
+    showPins();
   };
 
   const onLoadEroor = function () {
@@ -86,7 +121,7 @@
     changeFormState();
     window.form.changeState();
     window.moving.updateAddress();
-    window.server.load(renderPins, onLoadEroor);
+    window.server.load(onLoadSuccess, onLoadEroor);
   };
 
   const reset = () => {
@@ -100,6 +135,7 @@
 
   const initialize = () => {
     changeFormState();
+    addFilterEvent();
   };
 
   window.map = {
@@ -108,7 +144,6 @@
     mapPins,
     mapFilters,
     reset,
-    initialize,
-    renderPins
+    initialize
   };
 })();
