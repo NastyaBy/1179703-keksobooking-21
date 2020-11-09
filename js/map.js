@@ -7,6 +7,7 @@
   const mapFiltersSelects = mapFilters.querySelectorAll(`select`);
   const mapFiltersFieldsets = mapFilters.querySelectorAll(`fieldset`);
   const mapFiltersElements = [...mapFiltersSelects, ...mapFiltersFieldsets];
+  const NUMBER_OF_PIN = 5;
 
   let pins = [];
 
@@ -24,8 +25,14 @@
 
   const renderPins = function (bookings) {
     const fragment = document.createDocumentFragment();
+    let pinsCount;
+    if (bookings.length > NUMBER_OF_PIN) {
+      pinsCount = NUMBER_OF_PIN;
+    } else {
+      pinsCount = bookings.length;
+    }
 
-    for (let i = 0; i < bookings.length; i++) {
+    for (let i = 0; i < pinsCount; i++) {
       const booking = bookings[i];
       const pinElement = window.pin.getElement(booking);
       pins.push(pinElement);
