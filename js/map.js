@@ -89,6 +89,22 @@
     window.server.load(renderPins, onLoadEroor);
   };
 
+// 7.1
+
+  const housingTypeFilter = mapFilters.querySelector(`#housing-type`);
+  const housingPriceFilter = mapFilters.querySelector(`#housing-price`);
+  const housingRoomsFilter = mapFilters.querySelector(`#housing-rooms`);
+  const housingGuestsFilter = mapFilters.querySelector(`#housing-guests`);
+  const housingFeaturesList = mapFilters.querySelectorAll(`.map__checkbox`);
+
+
+
+
+
+
+
+
+
   const reset = () => {
     isPageActive = false;
     changeFormState();
