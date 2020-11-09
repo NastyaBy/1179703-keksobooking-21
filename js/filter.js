@@ -11,6 +11,7 @@
 
   const successHandler = function (data) {
     bookings = data;
+    window.map.renderPins(bookings);
   };
 
   const filterPinsByType = (value) => {
