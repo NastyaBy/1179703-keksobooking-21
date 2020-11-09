@@ -107,9 +107,8 @@
   };
 
   const reset = () => {
-    mapPinMain.style.top = `${mapPinMainCoords.TOP}`;
-    mapPinMain.style.left = `${mapPinMainCoords.LEFT}`;
-    window.form.setAddres();
+    mapPinMain.style.top = mapPinMainCoords.TOP;
+    mapPinMain.style.left = mapPinMainCoords.LEFT;
 
     updateAddress();
   };
