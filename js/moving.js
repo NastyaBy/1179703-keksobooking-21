@@ -109,7 +109,7 @@
   const reset = () => {
     mapPinMain.style.top = mapPinMainCoords.TOP;
     mapPinMain.style.left = mapPinMainCoords.LEFT;
-
+    console.log(mapPinMain);
     updateAddress();
   };
 
