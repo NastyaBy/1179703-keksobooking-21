@@ -94,6 +94,7 @@
     changeFormState();
     map.classList.add(`map--faded`);
     removePins();
+    mapFilters.reset();
 
   };
 
