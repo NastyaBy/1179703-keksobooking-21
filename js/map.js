@@ -2,6 +2,13 @@
 (() => {
   const map = document.querySelector(`.map`);
   const mapPins = document.querySelector(`.map__pins`);
+  const mapFiltersContainer = map.querySelector(`.map__filters-container`);
+  const mapFilters = mapFiltersContainer.querySelector(`.map__filters`);
+  const mapFiltersSelects = mapFilters.querySelectorAll(`select`);
+  const mapFiltersFieldsets = mapFilters.querySelectorAll(`fieldset`);
+  const mapFiltersElements = [...mapFiltersSelects, ...mapFiltersFieldsets];
+
+  let pins = [];
 
   let isPageActive = false;
 
@@ -21,6 +28,7 @@
     for (let i = 0; i < bookings.length; i++) {
       const booking = bookings[i];
       const pinElement = window.pin.getElement(booking);
+      pins.push(pinElement);
 
       addPinEvent(pinElement, booking);
 
@@ -48,6 +56,19 @@
     map.appendChild(errorElement);
   };
 
+  const changeFormState = () => {
+    mapFiltersElements.forEach(function (el) {
+      el.disabled = !isPageActive;
+    });
+  };
+
+  const removePins = () => {
+    pins.forEach((pin) => {
+      pin.remove();
+    });
+    pins = [];
+  };
+
   const activate = function () {
     if (isPageActive) {
       return;
@@ -55,54 +76,29 @@
 
     isPageActive = true;
     map.classList.remove(`map--faded`);
+    changeFormState();
     window.form.changeState();
     window.moving.updateAddress();
     window.server.load(renderPins, onLoadEroor);
   };
 
-  const unactivatePin = () => {
-    const mapPin = mapPins.querySelectorAll(`.map__pin`);
-    mapPin.forEach((pin) => {
-      pin.classList.remove(`map__pin--active`);
-    });
+  const reset = () => {
+    isPageActive = false;
+    changeFormState();
+    map.classList.add(`map--faded`);
+    removePins();
+
   };
 
-  const onPopupEscPress = (evt) => {
-    if (evt.key === `Escape`) {
-      evt.preventDefault();
-      removeCardPopup(map.querySelector(`.map__card.popup`));
-      unactivatePin();
-    }
+  const initialize = () => {
+    changeFormState();
   };
-
-
-  const mapFiltersContainer = map.querySelector(`.map__filters-container`);
-  const mapFilters = mapFiltersContainer.querySelector(`.map__filters`);
-  const mapFiltersElements = mapFilters.children;
-
-  const setDisabledElements = (disabledArrayn) => {
-    for (const element of disabledArray) {
-      element.disabled = true;
-    }
-  };
-
-
-
-
-  const removeCardPopup = () => {
-    if (map.querySelector(`.map__card.popup`)) {
-      map.querySelector(`.map__card.popup`).remove();
-      document.removeEventListener(`keydown`, onPopupEscPress);
-    }
-  };
-
 
   window.map = {
     activate,
     getIsPageActive,
     mapPins,
-    removeCardPopup,
-    setDisabledElements,
-    mapFiltersElements,
+    reset,
+    initialize
   };
 })();

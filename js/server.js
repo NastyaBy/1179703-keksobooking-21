@@ -53,8 +53,6 @@
 
     xhr.open(`POST`, UrlSaveData);
     xhr.send(data);
-    // window.form.successMessage();
-    // window.form.errorMessage();
   };
 
 

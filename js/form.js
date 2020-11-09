@@ -16,6 +16,10 @@
   // const adAvatar = adForm.querySelector(`#avatar`);
   // const featuresCheckboxes = adForm.querySelectorAll(`.feature__checkbox`);
 
+  const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
+  const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
+
+  let modalMessage = null;
 
   const addFormEvent = function () {
     adForm.addEventListener(`change`, function (evt) {
@@ -41,6 +45,16 @@
           break;
       }
       adForm.reportValidity();
+    });
+
+    adForm.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      window.server.update(onSuccess, onError, new FormData(adForm));
+    });
+
+    adForm.querySelector(`.ad-form__reset`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      resetForm();
     });
   };
 
@@ -218,82 +232,70 @@
   // const resetForm = adForm.querySelector(`.ad-form__reset`);
   // const submitForm = adForm.querySelector(`.ad-form__submit`);
 
-  adForm.addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
-    window.server.update(successMessage, errorMessage, new FormData(adForm));
-  });
+  // const ESCAPE = `Escape`;
 
-  adForm.addEventListener(`reset`, (evt) => {
-    evt.preventDefault();
-    getResetForm();
-  });
+  // const MouseButton = {
+  //   BASIC: 0
+  // };
 
-  const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
-  const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
-
-  const ESCAPE = `Escape`;
-
-  const MouseButton = {
-    BASIC: 0
-  };
   const newErrMessage = errorTemplate.cloneNode(true);
-  const errorButton = newErrMessage.querySelector(`button`);
 
-  let errorFragment = null;
+  // const errorButton = newErrMessage.querySelector(`button`);
 
-  const onErrorButtonClick = () => {
-    if (errorFragment) {
-      newErrMessage.remove();
-      errorButton.removeEventListener(`click`, onErrorButtonClick);
-      errorFragment = null;
+  // let errorFragment = null;
+
+  // const onErrorButtonClick = () => {
+  //   if (errorFragment) {
+  //     newErrMessage.remove();
+  //     errorButton.removeEventListener(`click`, onErrorButtonClick);
+  //     errorFragment = null;
+  //   }
+  // };
+
+  const closeModalMessage = () => {
+    if (modalMessage) {
+      modalMessage.remove();
+      modalMessage = null;
+      document.addEventListener(`click`, onDocumentClick);
+      document.addEventListener(`keydown`, onDocumentKeyDown);
     }
   };
-  const showErrorModal = (errorText) => {
+
+  const onDocumentClick = () => {
+    closeModalMessage();
+  };
+
+  const onDocumentKeyDown = () => {
+    closeModalMessage();
+  };
+
+  const addModalMessageEvents = () => {
+    document.addEventListener(`click`, onDocumentClick);
+    document.addEventListener(`keydown`, onDocumentKeyDown);
+  };
+
+  const onSuccess = () => {
+    modalMessage = successTemplate.cloneNode(true);
+    document.querySelector(`main`).appendChild(modalMessage);
+    resetForm();
+    addModalMessageEvents();
+  };
+
+  const onError = (errorText) => {
+    modalMessage = errorTemplate.cloneNode(true);
     newErrMessage.querySelector(`.error__message`).textContent = errorText;
-    errorFragment.appendChild(newErrMessage);
-    window.map.mapPins.appendChild(errorFragment);
+    document.querySelector(`main`).appendChild(modalMessage);
+    addModalMessageEvents();
   };
 
-  const errorMessage = () => {
-    // let errorFragment = document.createDocumentFragment();
-    onErrorButtonClick();
-    showErrorModal();
-    errorButton.addEventListener(`click`, onErrorButtonClick);
-  };
-
-  const successMessage = () => {
-    const successFragment = document.createDocumentFragment();
-    const newSuccessMessage = successTemplate.cloneNode(true);
-    successFragment.appendChild(newSuccessMessage);
-    document.querySelector(`main`).appendChild(successFragment);
-    adForm.reset();
-
-    addFormEvent();
-    window.moving.initialize();
-    initialize();
-
-
-    const outOfSuccessMessage = () => {
-      return (evt) => {
-        if (evt.code === ESCAPE || evt.button === MouseButton.BASIC) {
-          newSuccessMessage.remove();
-          document.removeEventListener(`click`, outOfSuccessMessage());
-          document.removeEventListener(`keydown`, outOfSuccessMessage());
-        }
-      };
-    };
-    document.addEventListener(`click`, outOfSuccessMessage());
-    document.addEventListener(`keydown`, outOfSuccessMessage());
-  };
-
-  const getResetForm = () => {
-    changeState();
-    window.map.setDisabledElements(mapFiltersElements);
-    window.map.removeCardPopup();
+  const resetForm = () => {
+    window.map.reset();
+    window.popup.close();
+    window.moving.reset();
     adForm.classList.add(`ad-form--disabled`);
     adForm.reset();
+    changeState();
   };
-
 
   window.form = {
     changeState,
