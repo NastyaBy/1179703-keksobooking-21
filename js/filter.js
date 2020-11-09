@@ -7,15 +7,34 @@
   const housingGuestsFilter = window.map.mapFilters.querySelector(`#housing-guests`);
   const housingFeaturesList = window.map.mapFilters.querySelectorAll(`.map__checkbox`);
 
-  //  const filterPinsByType = (value) => {
-  //   получение данных
-  //   if (выбор нужных)
-  //   {
-  //      оставить
-  //   }
-  //    else {
-  //       удаление ненужних
-  //   }
-  // }
+  let bookings = [];
+
+  const successHandler = function (data) {
+    bookings = data;
+  };
+
+  const filterPinsByType = (value) => {
+    bookings = bookings.filter((bookingItem) => {
+      return bookingItem.offer.type === value;
+    });
+  };
+
+  const filterPinsByPrice = (value) => {
+    bookings = bookings.filter((bookingItem) => {
+
+    });
+  };
+
+  const filterPinsByRooms = (value) => {
+    bookings = bookings.filter((bookingItem) => {
+
+    });
+  };
+
+  const filterPinsByGuests = (value) => {
+    bookings = bookings.filter((bookingItem) => {
+
+    });
+  };
 
 })();

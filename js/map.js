@@ -25,14 +25,14 @@
 
   const renderPins = function (bookings) {
     const fragment = document.createDocumentFragment();
-    let pinsCount;
+    let bookingsCount;
     if (bookings.length > NUMBER_OF_PIN) {
-      pinsCount = NUMBER_OF_PIN;
+      bookingsCount = NUMBER_OF_PIN;
     } else {
-      pinsCount = bookings.length;
+      bookingsCount = bookings.length;
     }
 
-    for (let i = 0; i < pinsCount; i++) {
+    for (let i = 0; i < bookingsCount; i++) {
       const booking = bookings[i];
       const pinElement = window.pin.getElement(booking);
       pins.push(pinElement);
@@ -108,6 +108,7 @@
     mapPins,
     mapFilters,
     reset,
-    initialize
+    initialize,
+    renderPins
   };
 })();
