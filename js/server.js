@@ -2,13 +2,12 @@
 
 (() => {
 
-  const URL = `https://21.javascript.pages.academy/keksobooking/data`;
+  const UrlLoadData = `https://21.javascript.pages.academy/keksobooking/data`;
+  const UrlSaveData = `https://21.javascript.pages.academy/keksobooking`;
 
-  const load = function (onSuccess, onError) {
+  const getXhr = function (onSuccess, onError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
-
-    xhr.open(`GET`, URL);
 
     xhr.addEventListener(`load`, () => {
       let error;
@@ -39,11 +38,26 @@
     xhr.addEventListener(`error`, () => {
       onError(`Произошла ошибка соединения`);
     });
+    return xhr;
+  };
 
+  const load = function (onSuccess, onError) {
+    const xhr = getXhr(onSuccess, onError);
+
+    xhr.open(`GET`, UrlLoadData);
     xhr.send();
   };
 
+  const update = function (onSuccess, onError, data) {
+    const xhr = getXhr(onSuccess, onError);
+
+    xhr.open(`POST`, UrlSaveData);
+    xhr.send(data);
+  };
+
+
   window.server = {
-    load
+    load,
+    update
   };
 })();

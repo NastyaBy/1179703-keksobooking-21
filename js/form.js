@@ -11,6 +11,15 @@
   const addressInput = adForm.querySelector(`#address`);
   const timeInSelect = adForm.querySelector(`#timein`);
   const timeOutSelect = adForm.querySelector(`#timeout`);
+  // const description = adForm.querySelector(`#description`);
+  // const adPhoto = adForm.querySelector(`#images`);
+  // const adAvatar = adForm.querySelector(`#avatar`);
+  // const featuresCheckboxes = adForm.querySelectorAll(`.feature__checkbox`);
+
+  const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
+  const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
+
+  let modalMessage = null;
 
   const addFormEvent = function () {
     adForm.addEventListener(`change`, function (evt) {
@@ -37,7 +46,18 @@
       }
       adForm.reportValidity();
     });
+
+    adForm.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      window.server.update(onSuccess, onError, new FormData(adForm));
+    });
+
+    adForm.querySelector(`.ad-form__reset`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      resetForm();
+    });
   };
+
 
   const validateForm = function () {
     validateRoomsCapacity();
@@ -207,9 +227,80 @@
   changeTimeOutValue(timeInSelect.value);
 
 
+  // 6.12
+
+  // const resetForm = adForm.querySelector(`.ad-form__reset`);
+  // const submitForm = adForm.querySelector(`.ad-form__submit`);
+
+  // const ESCAPE = `Escape`;
+
+  // const MouseButton = {
+  //   BASIC: 0
+  // };
+
+  const newErrMessage = errorTemplate.cloneNode(true);
+
+  // const errorButton = newErrMessage.querySelector(`button`);
+
+  // let errorFragment = null;
+
+  // const onErrorButtonClick = () => {
+  //   if (errorFragment) {
+  //     newErrMessage.remove();
+  //     errorButton.removeEventListener(`click`, onErrorButtonClick);
+  //     errorFragment = null;
+  //   }
+  // };
+
+  const closeModalMessage = () => {
+    if (modalMessage) {
+      modalMessage.remove();
+      modalMessage = null;
+      document.addEventListener(`click`, onDocumentClick);
+      document.addEventListener(`keydown`, onDocumentKeyDown);
+    }
+  };
+
+  const onDocumentClick = () => {
+    closeModalMessage();
+  };
+
+  const onDocumentKeyDown = () => {
+    closeModalMessage();
+  };
+
+  const addModalMessageEvents = () => {
+    document.addEventListener(`click`, onDocumentClick);
+    document.addEventListener(`keydown`, onDocumentKeyDown);
+  };
+
+  const onSuccess = () => {
+    modalMessage = successTemplate.cloneNode(true);
+    document.querySelector(`main`).appendChild(modalMessage);
+    resetForm();
+    addModalMessageEvents();
+  };
+
+  const onError = (errorText) => {
+    modalMessage = errorTemplate.cloneNode(true);
+    newErrMessage.querySelector(`.error__message`).textContent = errorText;
+    document.querySelector(`main`).appendChild(modalMessage);
+    addModalMessageEvents();
+  };
+
+  const resetForm = () => {
+    window.map.reset();
+    window.popup.close();
+    adForm.reset();
+    window.moving.reset();
+    adForm.classList.add(`ad-form--disabled`);
+    changeState();
+  };
+
   window.form = {
     changeState,
     initialize,
-    setAddres
+    setAddres,
+    adForm
   };
 })();

@@ -11,6 +11,11 @@
     AFTER: 22
   };
 
+  const MapPinMainCoords = {
+    LEFT: `570px`,
+    TOP: `375px`
+  };
+
   const ENTER = `Enter`;
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
@@ -24,7 +29,6 @@
 
   const updateAddress = function () {
     const {offsetTop, offsetLeft} = mapPinMain;
-
     const address = getAddres(offsetTop, offsetLeft);
     window.form.setAddres(address.valueX, address.valueY);
   };
@@ -101,6 +105,12 @@
     });
   };
 
+  const reset = () => {
+    mapPinMain.style.top = MapPinMainCoords.TOP;
+    mapPinMain.style.left = MapPinMainCoords.LEFT;
+    updateAddress();
+  };
+
   const initialize = () => {
     updateAddress();
     addEvents();
@@ -108,6 +118,7 @@
 
   window.moving = {
     initialize,
-    updateAddress
+    updateAddress,
+    reset
   };
 })();

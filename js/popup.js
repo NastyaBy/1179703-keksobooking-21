@@ -81,7 +81,9 @@
     }
   };
 
+
   window.popup = {
-    getElement
+    getElement,
+    close
   };
 })();
