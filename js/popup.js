@@ -34,7 +34,6 @@
     const photoElement = cardElement.querySelector(`.popup__photos`);
     const buttonClose = cardElement.querySelector(`.popup__close`);
 
-
     cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
     cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
     cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
@@ -80,7 +79,6 @@
       photoElement.appendChild(img);
     }
   };
-
 
   window.popup = {
     getElement,

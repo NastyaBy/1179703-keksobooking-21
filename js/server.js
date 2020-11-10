@@ -55,7 +55,6 @@
     xhr.send(data);
   };
 
-
   window.server = {
     load,
     update
