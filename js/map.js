@@ -46,6 +46,7 @@
 
   const renderPins = function (filtredPins) {
     removePins();
+    window.popup.close();
 
     const fragment = document.createDocumentFragment();
 
