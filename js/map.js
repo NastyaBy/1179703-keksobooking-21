@@ -12,7 +12,6 @@
   const housingPriceFilter = mapFilters.querySelector(`#housing-price`);
   const housingRoomsFilter = mapFilters.querySelector(`#housing-rooms`);
   const housingGuestsFilter = mapFilters.querySelector(`#housing-guests`);
-  // const housingFeaturesList = mapFilters.querySelectorAll(`input:checked`);
 
   let pins = [];
   let bookings = [];
@@ -50,19 +49,23 @@
     // });
   };
 
+  const getHousingFeatures = () => {
+    return Array.from(mapFilters.querySelectorAll(`#housing-features input:checked`)).map((item) => item.value);
+  };
+
   const showPins = () => {
     //  debugger;
-    const filtredPins = window.filter.getFiltredBookings(bookings, housingTypeFilter.value, housingPriceFilter.value, housingRoomsFilter.value, housingGuestsFilter.value);
+    const filtredPins = window.filter.getFiltredBookings(bookings, housingTypeFilter.value, housingPriceFilter.value, housingRoomsFilter.value, housingGuestsFilter.value, getHousingFeatures());
     renderPins(filtredPins);
   };
 
-  const renderPins = function () {
+  const renderPins = function (filtredPins) {
     removePins();
 
     const fragment = document.createDocumentFragment();
 
-    for (let i = 0; i < bookings.length; i++) {
-      const booking = bookings[i];
+    for (let i = 0; i < filtredPins.length; i++) {
+      const booking = filtredPins[i];
       const pinElement = window.pin.getElement(booking);
       pins.push(pinElement);
 

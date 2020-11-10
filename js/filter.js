@@ -48,32 +48,24 @@
     return value === ANY_VALUE || pin.offer.guests <= Number(value);
   };
 
+  const filterPinsByFeatures = (pin, housingFeatures) => {
+    return housingFeatures.every((feature) => pin.offer.features.includes(feature));
+  };
 
-  const getFiltredBookings = (bookings, housingTypeValue, housingPriceValue, housingRoomsValue, housingGuestsValue) => {
+
+  const getFiltredBookings = (bookings, housingTypeValue, housingPriceValue, housingRoomsValue, housingGuestsValue, housingFeatures) => {
     const filtredPins = [];
 
     for (let i = 0; i < bookings.length; i++) {
       const pin = bookings[i];
 
-      const IsPinAvaliableType = filterPinsByType(pin, housingTypeValue);
-      const IsPinAvaliablPrice = filterPinsByPrice(pin, housingPriceValue);
-      const IsPinAvaliableRooms = filterPinsByRooms(pin, housingRoomsValue);
-      const IsPinAvaliableGuest = filterPinsByGuests(pin, housingGuestsValue);
+      const isPinAvaliable = filterPinsByType(pin, housingTypeValue) &&
+        filterPinsByPrice(pin, housingPriceValue) &&
+        filterPinsByRooms(pin, housingRoomsValue) &&
+        filterPinsByGuests(pin, housingGuestsValue) &&
+        filterPinsByFeatures(pin, housingFeatures);
 
-
-      if (IsPinAvaliableType) {
-        filtredPins.push(pin);
-      }
-
-      if (IsPinAvaliablPrice) {
-        filtredPins.push(pin);
-      }
-
-      if (IsPinAvaliableRooms) {
-        filtredPins.push(pin);
-      }
-
-      if (IsPinAvaliableGuest) {
+      if (isPinAvaliable) {
         filtredPins.push(pin);
       }
 
