@@ -29,7 +29,6 @@
 
   const updateAddress = function () {
     const {offsetTop, offsetLeft} = mapPinMain;
-
     const address = getAddres(offsetTop, offsetLeft);
     window.form.setAddres(address.valueX, address.valueY);
   };

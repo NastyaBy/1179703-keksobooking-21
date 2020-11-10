@@ -291,9 +291,9 @@
   const resetForm = () => {
     window.map.reset();
     window.popup.close();
+    adForm.reset();
     window.moving.reset();
     adForm.classList.add(`ad-form--disabled`);
-    adForm.reset();
     changeState();
   };
 

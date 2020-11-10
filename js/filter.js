@@ -28,16 +28,24 @@
   };
 
   const filterPinsByPrice = (pin, value) => {
-    return value === ANY_VALUE || (pin.offer.price >= PRICE.MIDDLE_MIN) && (pin.offer.price <= PRICE.MIDDLE_MAX)
-      || pin.offer.price < PRICE.LOW_MAX || pin.offer.price > PRICE.HIGH_MIN;
+    switch (value) {
+      case `middle`:
+        return (pin.offer.price >= PRICE.MIDDLE_MIN) && (pin.offer.price <= PRICE.MIDDLE_MAX);
+      case `low`:
+        return pin.offer.price < PRICE.LOW_MAX;
+      case `high`:
+        return pin.offer.price > PRICE.HIGH_MIN;
+      default:
+        return value === ANY_VALUE;
+    }
   };
 
   const filterPinsByRooms = (pin, value) => {
-    return value === ANY_VALUE || pin.offer.price === Number(value);
+    return value === ANY_VALUE || pin.offer.rooms === Number(value);
   };
 
   const filterPinsByGuests = (pin, value) => {
-    return value === ANY_VALUE || pin.offer.price === Number(value);
+    return value === ANY_VALUE || pin.offer.guests <= Number(value);
   };
 
 
@@ -73,7 +81,6 @@
         break;
       }
     }
-
     return filtredPins;
   };
 

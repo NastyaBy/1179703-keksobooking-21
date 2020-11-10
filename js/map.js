@@ -12,7 +12,7 @@
   const housingPriceFilter = mapFilters.querySelector(`#housing-price`);
   const housingRoomsFilter = mapFilters.querySelector(`#housing-rooms`);
   const housingGuestsFilter = mapFilters.querySelector(`#housing-guests`);
-  const housingFeaturesList = mapFilters.querySelectorAll(`input:checked`);
+  // const housingFeaturesList = mapFilters.querySelectorAll(`input:checked`);
 
   let pins = [];
   let bookings = [];
@@ -30,7 +30,7 @@
   };
 
   const addFilterEvent = function () {
-    mapFilters.addEventListener(`change`, function (evt) {
+    mapFilters.addEventListener(`change`, function () {
       showPins();
     });
     //   switch (evt.target.value) {
@@ -56,7 +56,7 @@
     renderPins(filtredPins);
   };
 
-  const renderPins = function (bookings) {
+  const renderPins = function () {
     removePins();
 
     const fragment = document.createDocumentFragment();
