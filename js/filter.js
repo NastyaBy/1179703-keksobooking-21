@@ -12,19 +12,8 @@
     HIGH_MIN: 50000
   };
 
-  // let bookings = [];
-
-  // const successHandler = function (data) {
-  //   bookings = data;
-  //   window.map.renderPins(bookings);
-  // };
-
   const filterPinsByType = (pin, value) => {
     return value === ANY_VALUE || pin.offer.type === value;
-
-    // bookings = bookings.filter((bookingItem) => {
-    //   return bookingItem.offer.type === value;
-    // });
   };
 
   const filterPinsByPrice = (pin, value) => {
@@ -52,7 +41,6 @@
     return housingFeatures.every((feature) => pin.offer.features.includes(feature));
   };
 
-
   const getFiltredBookings = (bookings, housingTypeValue, housingPriceValue, housingRoomsValue, housingGuestsValue, housingFeatures) => {
     const filtredPins = [];
 
@@ -73,30 +61,11 @@
         break;
       }
     }
+
     return filtredPins;
   };
-
-  // const addFilterEvent = function () {
-  //   window.map.mapFilters.addEventListener(`change`, function (evt) {
-  //     switch (evt.target.value) {
-  //       case housingTypeFilter.value:
-  //         filterPinsByType();
-  //         break;
-  //       case housingPriceFilter.value:
-  //         filterPinsByPrice();
-  //         break;
-  //       case housingRoomsFilter.value:
-  //         filterPinsByRooms();
-  //         break;
-  //       case housingGuestsFilter.value:
-  //         filterPinsByGuests();
-  //         break;
-  //     }
-  //   });
-  // };
 
   window.filter = {
     getFiltredBookings
   };
-
 })();

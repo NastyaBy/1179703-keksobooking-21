@@ -1,5 +1,6 @@
 'use strict';
 (() => {
+
   const map = document.querySelector(`.map`);
   const mapPins = document.querySelector(`.map__pins`);
   const mapFiltersContainer = map.querySelector(`.map__filters-container`);
@@ -32,21 +33,6 @@
     mapFilters.addEventListener(`change`, function () {
       showPins();
     });
-    //   switch (evt.target.value) {
-    //     case housingTypeFilter.value:
-    //       filterPinsByType();
-    //       break;
-    //     case housingPriceFilter.value:
-    //       filterPinsByPrice();
-    //       break;
-    //     case housingRoomsFilter.value:
-    //       filterPinsByRooms();
-    //       break;
-    //     case housingGuestsFilter.value:
-    //       filterPinsByGuests();
-    //       break;
-    //   }
-    // });
   };
 
   const getHousingFeatures = () => {
@@ -54,7 +40,6 @@
   };
 
   const showPins = () => {
-    //  debugger;
     const filtredPins = window.filter.getFiltredBookings(bookings, housingTypeFilter.value, housingPriceFilter.value, housingRoomsFilter.value, housingGuestsFilter.value, getHousingFeatures());
     renderPins(filtredPins);
   };
@@ -76,7 +61,6 @@
 
     mapPins.appendChild(fragment);
   };
-
 
   const onLoadSuccess = (items) => {
     bookings = items;
@@ -133,7 +117,6 @@
     map.classList.add(`map--faded`);
     removePins();
     mapFilters.reset();
-
   };
 
   const initialize = () => {

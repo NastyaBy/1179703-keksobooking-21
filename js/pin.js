@@ -18,5 +18,4 @@
   window.pin = {
     getElement
   };
-
 })();
