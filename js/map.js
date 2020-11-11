@@ -31,7 +31,7 @@
 
   const addFilterEvent = function () {
     mapFilters.addEventListener(`change`, function () {
-      showPins();
+      window.debounce.listDelay(showPins());
     });
   };
 
