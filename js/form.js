@@ -1,6 +1,8 @@
 'use strict';
 (() => {
 
+  const FILE_TYPES = [`jpg`, `jpeg`, `png`];
+
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
   const titleElement = adForm.querySelector(`#title`);
@@ -11,13 +13,18 @@
   const addressInput = adForm.querySelector(`#address`);
   const timeInSelect = adForm.querySelector(`#timein`);
   const timeOutSelect = adForm.querySelector(`#timeout`);
+  const avatarLoad = adForm.querySelector(`#avatar`);
+  const avatarPreview = adForm.querySelector(`.ad-form-header__preview`);
+  const adPicLoad = adForm.querySelector(`#images`);
+  const adPicPreview = adForm.querySelector(`.ad-form__photo`);
+
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
 
   let modalMessage = null;
 
-  const addFormEvent = function () {
-    adForm.addEventListener(`change`, function (evt) {
+  const addFormEvent = () => {
+    adForm.addEventListener(`change`, (evt) => {
       switch (evt.target.id) {
         case roomsElement.id:
           validateRoomsCapacity();
@@ -54,28 +61,50 @@
     });
   };
 
-  const validateForm = function () {
+  const addImage = (evt) => {
+    const file = evt.target.files[0];
+    const fileName = file.name.toLowerCase();
+
+    const matches = FILE_TYPES.some((ending) => {
+      return fileName.endsWith(ending);
+    });
+
+    if (matches) {
+      const reader = new FileReader();
+
+      reader.addEventListener(`load`, () => {
+        if (avatarLoad) {
+          avatarPreview.src = reader.result;
+        } else if (adPicLoad) {
+          adPicPreview.src = reader.result;
+        }
+      });
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const validateForm = () => {
     validateRoomsCapacity();
     validateTypePrice();
     adForm.reportValidity();
   };
 
-  const addTitleEvent = function () {
-    titleElement.addEventListener(`input`, function () {
+  const addTitleEvent = () => {
+    titleElement.addEventListener(`input`, () => {
       validateTitle();
     });
   };
 
-  const addEvents = function () {
+  const addEvents = () => {
     addFormEvent();
     addTitleEvent();
   };
 
-  const setAddres = function (valueX, valueY) {
+  const setAddres = (valueX, valueY) => {
     addressInput.value = `${valueX}, ${valueY}`;
   };
 
-  const changeState = function () {
+  const changeState = () => {
 
     if (window.map.getIsPageActive()) {
       adForm.classList.remove(`ad-form--disabled`);
@@ -83,14 +112,16 @@
       adForm.classList.add(`ad-form--disabled`);
     }
 
-    adFormFieldset.forEach(function (el) {
+    adFormFieldset.forEach((el) => {
       el.disabled = !window.map.getIsPageActive();
     });
   };
 
-  const initialize = function () {
+  const initialize = () => {
     changeState();
     addEvents();
+    avatarLoad.addEventListener(`change`, addImage());
+    adPicLoad.addEventListener(`change`, addImage());
     validateForm();
   };
 
@@ -99,7 +130,7 @@
     MAX: 100
   };
 
-  const validateTitle = function () {
+  const validateTitle = () => {
     let valueLength = titleElement.value.length;
     let message = ``;
 
@@ -127,7 +158,7 @@
     BUNGALOW: 0
   };
 
-  const rewritingPlaceholder = function () {
+  const rewritingPlaceholder = () => {
     const typeValue = typeElement.value;
 
     if (typeValue === TypeOffer.BUNGALOW) {
@@ -145,7 +176,7 @@
     }
   };
 
-  const isPriceValid = function (typeValue, priceValue) {
+  const isPriceValid = (typeValue, priceValue) => {
     let isValid = false;
     if (typeValue === TypeOffer.BUNGALOW && priceValue >= MinPrice.BUNGALOW) {
       isValid = true;
@@ -173,7 +204,7 @@
     NOTFORGUEST: 0
   };
 
-  const isRoomCapacityValid = function (roomsValue, capacityValue) {
+  const isRoomCapacityValid = (roomsValue, capacityValue) => {
     let isValid = false;
     if (roomsValue === Rooms.ONE && capacityValue === Capacity.ONE) {
       isValid = true;
@@ -187,7 +218,7 @@
     return isValid;
   };
 
-  const validateTypePrice = function () {
+  const validateTypePrice = () => {
     const typeValue = typeElement.value;
     const priceValue = parseInt(priceElement.value, 10);
 
@@ -197,7 +228,7 @@
     typeElement.setCustomValidity(typeMessage);
   };
 
-  const validateRoomsCapacity = function () {
+  const validateRoomsCapacity = () => {
     const roomsValue = parseInt(roomsElement.value, 10);
     const capacityValue = parseInt(capacityElement.value, 10);
 
@@ -261,6 +292,8 @@
   const resetForm = () => {
     window.map.reset();
     window.popup.close();
+    avatarLoad.removeEventListener(`change`, addImage());
+    adPicLoad.removeEventListener(`change`, addImage());
     adForm.reset();
     window.moving.reset();
     adForm.classList.add(`ad-form--disabled`);

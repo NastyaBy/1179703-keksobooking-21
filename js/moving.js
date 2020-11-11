@@ -20,14 +20,14 @@
 
   const mapPinMain = document.querySelector(`.map__pin--main`);
 
-  const getAddres = function (offsetTop, offsetLeft) {
+  const getAddres = (offsetTop, offsetLeft) => {
     const valueX = offsetLeft + Math.floor(MainPinSize.WIDTH / 2);
     const valueY = offsetTop + Math.floor((!window.map.getIsPageActive() ? MainPinSize.HEIGHT / 2 : MainPinSize.HEIGHT + MainPinSize.AFTER));
 
     return {valueX, valueY};
   };
 
-  const updateAddress = function () {
+  const updateAddress = () => {
     const {offsetTop, offsetLeft} = mapPinMain;
     const address = getAddres(offsetTop, offsetLeft);
     window.form.setAddres(address.valueX, address.valueY);
@@ -35,13 +35,13 @@
 
   const addEvents = () => {
 
-    mapPinMain.addEventListener(`keydown`, function (evt) {
+    mapPinMain.addEventListener(`keydown`, (evt) => {
       if (evt.key === ENTER) {
         window.map.activate();
       }
     });
 
-    mapPinMain.addEventListener(`mousedown`, function (evt) {
+    mapPinMain.addEventListener(`mousedown`, (evt) => {
       evt.preventDefault();
 
       if (evt.which === MouseButton.LEFT) {
@@ -55,7 +55,7 @@
 
       let dragged = false;
 
-      const onMouseMove = function (moveEvt) {
+      const onMouseMove = (moveEvt) => {
         moveEvt.preventDefault();
 
         dragged = true;
@@ -85,14 +85,14 @@
         }
       };
 
-      const onMouseUp = function (upEvt) {
+      const onMouseUp = (upEvt) => {
         upEvt.preventDefault();
 
         document.removeEventListener(`mousemove`, onMouseMove);
         document.removeEventListener(`mouseup`, onMouseUp);
 
         if (dragged) {
-          const onClickPreventDefault = function (clickEvt) {
+          const onClickPreventDefault = (clickEvt) => {
             clickEvt.preventDefault();
             mapPinMain.removeEventListener(`click`, onClickPreventDefault);
           };

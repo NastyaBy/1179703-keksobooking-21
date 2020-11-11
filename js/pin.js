@@ -3,7 +3,7 @@
 (() => {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
-  const getElement = function (bookingItem) {
+  const getElement = (bookingItem) => {
     const pinElement = pinTemplate.cloneNode(true);
     const pinElementImg = pinElement.querySelector(`img`);
 
