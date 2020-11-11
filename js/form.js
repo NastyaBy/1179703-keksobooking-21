@@ -2,6 +2,7 @@
 (() => {
 
   const FILE_TYPES = [`jpg`, `jpeg`, `png`];
+  const DefaultAvatarImage = `img/muffin-grey.svg`;
 
   const adForm = document.querySelector(`.ad-form`);
   const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
@@ -14,9 +15,10 @@
   const timeInSelect = adForm.querySelector(`#timein`);
   const timeOutSelect = adForm.querySelector(`#timeout`);
   const avatarLoad = adForm.querySelector(`#avatar`);
-  const avatarPreview = adForm.querySelector(`.ad-form-header__preview`);
+  const avatarPreviewImg = adForm.querySelector(`.ad-form-header__preview img`);
   const adPicLoad = adForm.querySelector(`#images`);
   const adPicPreview = adForm.querySelector(`.ad-form__photo`);
+
 
   const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
   const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
@@ -61,7 +63,7 @@
     });
   };
 
-  const addImage = (evt) => {
+  const loadImage = (evt, cb) => {
     const file = evt.target.files[0];
     const fileName = file.name.toLowerCase();
 
@@ -73,14 +75,31 @@
       const reader = new FileReader();
 
       reader.addEventListener(`load`, () => {
-        if (avatarLoad) {
-          avatarPreview.src = reader.result;
-        } else if (adPicLoad) {
-          adPicPreview.src = reader.result;
-        }
+        cb(reader.result);
       });
       reader.readAsDataURL(file);
     }
+  };
+
+  const loadAvatarImage = (result) => {
+    avatarPreviewImg.src = result;
+  };
+
+  const loadAdPicImage = (result) => {
+    adPicPreview.style.backgroundImage = `url(${result})`;
+    adPicPreview.style.backgroundSize = `contain`;
+    adPicPreview.style.backgroundRepeat = `no-repeat`;
+    adPicPreview.style.backgroundPositionX = `50%`;
+    adPicPreview.style.backgroundPositionY = `50%`;
+  };
+
+  const addLoadImagesEvents = () => {
+    avatarLoad.addEventListener(`change`, (evt) => {
+      loadImage(evt, loadAvatarImage);
+    });
+    adPicLoad.addEventListener(`change`, (evt) => {
+      loadImage(evt, loadAdPicImage);
+    });
   };
 
   const validateForm = () => {
@@ -120,8 +139,7 @@
   const initialize = () => {
     changeState();
     addEvents();
-    avatarLoad.addEventListener(`change`, addImage());
-    adPicLoad.addEventListener(`change`, addImage());
+    addLoadImagesEvents();
     validateForm();
   };
 
@@ -292,8 +310,8 @@
   const resetForm = () => {
     window.map.reset();
     window.popup.close();
-    avatarLoad.removeEventListener(`change`, addImage());
-    adPicLoad.removeEventListener(`change`, addImage());
+    loadAvatarImage(DefaultAvatarImage);
+    adPicPreview.style.backgroundImage = ``;
     adForm.reset();
     window.moving.reset();
     adForm.classList.add(`ad-form--disabled`);
