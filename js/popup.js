@@ -28,24 +28,28 @@ const onDocumentKeyDown = (evt) => {
 };
 
 const getElement = (bookingItem) => {
+  const {
+    offer: {title, address, price, type, rooms, guests, checkin, checkout, description, features, photos},
+    author: {avatar}} = bookingItem;
+
   closeCardElement();
   cardElement = cardTemplate.cloneNode(true);
   const featureElement = cardElement.querySelector(`.popup__features`);
   const photoElement = cardElement.querySelector(`.popup__photos`);
   const buttonClose = cardElement.querySelector(`.popup__close`);
 
-  cardElement.querySelector(`.popup__title`).textContent = `${bookingItem.offer.title}`;
-  cardElement.querySelector(`.popup__text--address`).textContent = `${bookingItem.offer.address}`;
-  cardElement.querySelector(`.popup__text--price`).textContent = `${bookingItem.offer.price} ₽/ночь`;
-  cardElement.querySelector(`.popup__type`).textContent = OffetType[`${bookingItem.offer.type}`];
-  cardElement.querySelector(`.popup__text--capacity`).textContent = `${bookingItem.offer.rooms} комнаты для ${bookingItem.offer.guests} гостей`;
-  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${bookingItem.offer.checkin}, выезд до ${bookingItem.offer.checkout}`;
-  cardElement.querySelector(`.popup__description`).textContent = `${bookingItem.offer.description}`;
+  cardElement.querySelector(`.popup__title`).textContent = `${title}`;
+  cardElement.querySelector(`.popup__text--address`).textContent = `${address}`;
+  cardElement.querySelector(`.popup__text--price`).textContent = `${price} ₽/ночь`;
+  cardElement.querySelector(`.popup__type`).textContent = OffetType[`${type}`];
+  cardElement.querySelector(`.popup__text--capacity`).textContent = `${rooms} комнаты для ${guests} гостей`;
+  cardElement.querySelector(`.popup__text--time`).textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+  cardElement.querySelector(`.popup__description`).textContent = `${description}`;
 
-  getRenderFeature(featureElement, bookingItem.offer.features);
-  getRenderPhotos(photoElement, bookingItem.offer.photos);
+  getRenderFeature(featureElement, features);
+  getRenderPhotos(photoElement, photos);
 
-  cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${bookingItem.author.avatar}`);
+  cardElement.querySelector(`.popup__avatar`).setAttribute(`src`, `${avatar}`);
 
   document.addEventListener(`keydown`, onDocumentKeyDown);
 

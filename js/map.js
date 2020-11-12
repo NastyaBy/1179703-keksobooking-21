@@ -29,9 +29,9 @@ const addPinEvent = (pinElement, bookingItem) => {
 };
 
 const addFilterEvent = () => {
-  mapFilters.addEventListener(`change`, () => {
-    window.debounce.listDelay(showPins());
-  });
+  mapFilters.addEventListener(`change`, window.debounce(() => {
+    showPins();
+  }));
 };
 
 const getHousingFeatures = () => {
@@ -127,8 +127,6 @@ const initialize = () => {
 window.map = {
   activate,
   getIsPageActive,
-  mapPins,
-  mapFilters,
   reset,
   initialize
 };

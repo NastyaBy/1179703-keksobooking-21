@@ -1,7 +1,7 @@
 'use strict';
 
 const FILE_TYPES = [`jpg`, `jpeg`, `png`];
-const DefaultAvatarImage = `img/muffin-grey.svg`;
+const DEFAULT_AVATAR_IMAGE = `img/muffin-grey.svg`;
 
 const adForm = document.querySelector(`.ad-form`);
 const adFormFieldset = document.querySelectorAll(`.ad-form fieldset`);
@@ -21,6 +21,40 @@ const adPicPreview = adForm.querySelector(`.ad-form__photo`);
 
 const successTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
 const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
+
+const TitleLength = {
+  MIN: 30,
+  MAX: 100
+};
+
+const TypeOffer = {
+  PALACE: `palace`,
+  FLAT: `flat`,
+  HOUSE: `house`,
+  BUNGALOW: `bungalow`
+};
+
+const MinPrice = {
+  PALACE: 10000,
+  FLAT: 1000,
+  HOUSE: 5000,
+  BUNGALOW: 0
+};
+
+const Rooms = {
+  ONE: 1,
+  TWO: 2,
+  THREE: 3,
+  HUNDRED: 100
+};
+
+const Capacity = {
+  ONE: 1,
+  TWO: 2,
+  THREE: 3,
+  NOTFORGUEST: 0
+};
+
 
 let modalMessage = null;
 
@@ -142,13 +176,8 @@ const initialize = () => {
   validateForm();
 };
 
-const TitleLength = {
-  MIN: 30,
-  MAX: 100
-};
-
 const validateTitle = () => {
-  let valueLength = titleElement.value.length;
+  const valueLength = titleElement.value.length;
   let message = ``;
 
   if (valueLength < TitleLength.MIN) {
@@ -159,20 +188,6 @@ const validateTitle = () => {
 
   titleElement.setCustomValidity(message);
   titleElement.reportValidity();
-};
-
-const TypeOffer = {
-  PALACE: `palace`,
-  FLAT: `flat`,
-  HOUSE: `house`,
-  BUNGALOW: `bungalow`
-};
-
-const MinPrice = {
-  PALACE: 10000,
-  FLAT: 1000,
-  HOUSE: 5000,
-  BUNGALOW: 0
 };
 
 const rewritingPlaceholder = () => {
@@ -207,19 +222,6 @@ const isPriceValid = (typeValue, priceValue) => {
   return isValid;
 };
 
-const Rooms = {
-  ONE: 1,
-  TWO: 2,
-  THREE: 3,
-  HUNDRED: 100
-};
-
-const Capacity = {
-  ONE: 1,
-  TWO: 2,
-  THREE: 3,
-  NOTFORGUEST: 0
-};
 
 const isRoomCapacityValid = (roomsValue, capacityValue) => {
   let isValid = false;
@@ -266,16 +268,12 @@ const changeTimeInValue = (value) => {
   timeInSelect.value = value;
 };
 
-changeTimeOutValue(timeInSelect.value);
-
-const newErrMessage = errorTemplate.cloneNode(true);
-
 const closeModalMessage = () => {
   if (modalMessage) {
     modalMessage.remove();
     modalMessage = null;
-    document.addEventListener(`click`, onDocumentClick);
-    document.addEventListener(`keydown`, onDocumentKeyDown);
+    document.removeEventListener(`click`, onDocumentClick);
+    document.removeEventListener(`keydown`, onDocumentKeyDown);
   }
 };
 
@@ -299,9 +297,8 @@ const onSuccess = () => {
   addModalMessageEvents();
 };
 
-const onError = (errorText) => {
+const onError = () => {
   modalMessage = errorTemplate.cloneNode(true);
-  newErrMessage.querySelector(`.error__message`).textContent = errorText;
   document.querySelector(`main`).appendChild(modalMessage);
   addModalMessageEvents();
 };
@@ -309,7 +306,7 @@ const onError = (errorText) => {
 const resetForm = () => {
   window.map.reset();
   window.popup.closeCardElement();
-  loadAvatarImage(DefaultAvatarImage);
+  loadAvatarImage(DEFAULT_AVATAR_IMAGE);
   adPicPreview.style.backgroundImage = ``;
   adForm.reset();
   window.moving.reset();
@@ -320,6 +317,5 @@ const resetForm = () => {
 window.form = {
   changeState,
   initialize,
-  setAddres,
-  adForm
+  setAddres
 };

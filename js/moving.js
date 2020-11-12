@@ -15,6 +15,13 @@ const MapPinMainCoords = {
   TOP: `375px`
 };
 
+const AddresValid = {
+  X_MIN: 0,
+  X_MAX: 1200,
+  Y_MIN: 130,
+  Y_MAX: 630,
+};
+
 const ENTER = `Enter`;
 
 const mapPinMain = document.querySelector(`.map__pin--main`);
@@ -74,7 +81,7 @@ const addEvents = () => {
 
       const {valueX, valueY} = getAddres(offsetTop, offsetLeft);
 
-      const isAddresValid = valueX >= 0 && valueX <= 1200 && valueY >= 130 && valueY <= 630;
+      const isAddresValid = valueX >= AddresValid.X_MIN && valueX <= AddresValid.X_MAX && valueY >= AddresValid.Y_MIN && valueY <= AddresValid.Y_MAX;
 
       if (isAddresValid) {
         mapPinMain.style.top = `${offsetTop}px`;
@@ -91,11 +98,11 @@ const addEvents = () => {
       document.removeEventListener(`mouseup`, onMouseUp);
 
       if (dragged) {
-        const onClickPreventDefault = (clickEvt) => {
+        const onMapPinMainClick = (clickEvt) => {
           clickEvt.preventDefault();
-          mapPinMain.removeEventListener(`click`, onClickPreventDefault);
+          mapPinMain.removeEventListener(`click`, onMapPinMainClick);
         };
-        mapPinMain.addEventListener(`click`, onClickPreventDefault);
+        mapPinMain.addEventListener(`click`, onMapPinMainClick);
       }
     };
 

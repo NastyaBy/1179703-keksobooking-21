@@ -11,17 +11,23 @@ const PRICE = {
   HIGH_MIN: 50000
 };
 
+const FILTER_PRICE = {
+  MIDDLE: `middle`,
+  LOW: `low`,
+  HIGH: `high`
+};
+
 const filterPinsByType = (pin, value) => {
   return value === ANY_VALUE || pin.offer.type === value;
 };
 
 const filterPinsByPrice = (pin, value) => {
   switch (value) {
-    case `middle`:
+    case FILTER_PRICE.MIDDLE:
       return (pin.offer.price >= PRICE.MIDDLE_MIN) && (pin.offer.price <= PRICE.MIDDLE_MAX);
-    case `low`:
+    case FILTER_PRICE.LOW:
       return pin.offer.price < PRICE.LOW_MAX;
-    case `high`:
+    case FILTER_PRICE.HIGH:
       return pin.offer.price > PRICE.HIGH_MIN;
     default:
       return value === ANY_VALUE;

@@ -1,9 +1,8 @@
 'use strict';
 
-const DEBOUNCE_INTERVAL = 300; // ms
+const DEBOUNCE_INTERVAL = 300;
 
-
-const listDelay = (cb) => {
+window.debounce = (cb) => {
   let lastTimeout = null;
 
   return (...parameters) => {
@@ -14,8 +13,4 @@ const listDelay = (cb) => {
       cb(...parameters);
     }, DEBOUNCE_INTERVAL);
   };
-};
-
-window.debounce = {
-  listDelay
 };
