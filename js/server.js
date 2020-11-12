@@ -1,7 +1,9 @@
 'use strict';
 
-const UrlLoadData = `https://21.javascript.pages.academy/keksobooking/data`;
-const UrlSaveData = `https://21.javascript.pages.academy/keksobooking`;
+const UrlData = {
+  LOAD: `https://21.javascript.pages.academy/keksobooking/data`,
+  SAVE: `https://21.javascript.pages.academy/keksobooking`
+};
 
 const getXhr = (onSuccess, onError) => {
   const xhr = new XMLHttpRequest();
@@ -42,14 +44,14 @@ const getXhr = (onSuccess, onError) => {
 const load = (onSuccess, onError) => {
   const xhr = getXhr(onSuccess, onError);
 
-  xhr.open(`GET`, UrlLoadData);
+  xhr.open(`GET`, UrlData.LOAD);
   xhr.send();
 };
 
 const update = (onSuccess, onError, data) => {
   const xhr = getXhr(onSuccess, onError);
 
-  xhr.open(`POST`, UrlSaveData);
+  xhr.open(`POST`, UrlData.SAVE);
   xhr.send(data);
 };
 
