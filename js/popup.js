@@ -27,7 +27,7 @@
     }
   };
 
-  const getElement = function (bookingItem) {
+  const getElement = (bookingItem) => {
     close();
     cardElement = cardTemplate.cloneNode(true);
     const featureElement = cardElement.querySelector(`.popup__features`);
@@ -49,14 +49,14 @@
 
     document.addEventListener(`keydown`, onDocumentKeyDown);
 
-    buttonClose.addEventListener(`click`, function () {
+    buttonClose.addEventListener(`click`, () => {
       close();
     });
 
     return cardElement;
   };
 
-  const getRenderFeature = function (featureElement, features) {
+  const getRenderFeature = (featureElement, features) => {
     featureElement.innerHTML = ``;
 
     for (let i = 0; i < features.length; i++) {
@@ -67,7 +67,7 @@
     }
   };
 
-  const getRenderPhotos = function (photoElement, photos) {
+  const getRenderPhotos = (photoElement, photos) => {
     const imgTemplate = photoElement.querySelector(`.popup__photo`);
 
     photoElement.innerHTML = ``;

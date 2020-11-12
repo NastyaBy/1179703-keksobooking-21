@@ -5,7 +5,7 @@
   const UrlLoadData = `https://21.javascript.pages.academy/keksobooking/data`;
   const UrlSaveData = `https://21.javascript.pages.academy/keksobooking`;
 
-  const getXhr = function (onSuccess, onError) {
+  const getXhr = (onSuccess, onError) => {
     const xhr = new XMLHttpRequest();
     xhr.responseType = `json`;
 
@@ -41,14 +41,14 @@
     return xhr;
   };
 
-  const load = function (onSuccess, onError) {
+  const load = (onSuccess, onError) => {
     const xhr = getXhr(onSuccess, onError);
 
     xhr.open(`GET`, UrlLoadData);
     xhr.send();
   };
 
-  const update = function (onSuccess, onError, data) {
+  const update = (onSuccess, onError, data) => {
     const xhr = getXhr(onSuccess, onError);
 
     xhr.open(`POST`, UrlSaveData);

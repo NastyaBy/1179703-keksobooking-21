@@ -24,14 +24,14 @@
   };
 
   const addPinEvent = (pinElement, bookingItem) => {
-    pinElement.addEventListener(`click`, function () {
+    pinElement.addEventListener(`click`, () => {
       map.appendChild(window.popup.getElement(bookingItem));
     });
   };
 
-  const addFilterEvent = function () {
-    mapFilters.addEventListener(`change`, function () {
-      showPins();
+  const addFilterEvent = () => {
+    mapFilters.addEventListener(`change`, () => {
+      window.debounce.listDelay(showPins());
     });
   };
 
@@ -44,7 +44,7 @@
     renderPins(filtredPins);
   };
 
-  const renderPins = function (filtredPins) {
+  const renderPins = (filtredPins) => {
     removePins();
     window.popup.close();
 
@@ -68,7 +68,7 @@
     showPins();
   };
 
-  const onLoadEroor = function () {
+  const onLoadEroor = () => {
     const errorElement = document.createElement(`div`);
     errorElement.innerText = `Ошибка при попытке загрузки данных`;
     errorElement.style.position = `absolute`;
@@ -87,7 +87,7 @@
   };
 
   const changeFormState = () => {
-    mapFiltersElements.forEach(function (el) {
+    mapFiltersElements.forEach((el) => {
       el.disabled = !isPageActive;
     });
   };
@@ -99,7 +99,7 @@
     pins = [];
   };
 
-  const activate = function () {
+  const activate = () => {
     if (isPageActive) {
       return;
     }
