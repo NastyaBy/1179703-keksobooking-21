@@ -308,7 +308,7 @@ const onError = (errorText) => {
 
 const resetForm = () => {
   window.map.reset();
-  window.popup.close();
+  window.popup.closeCardElement();
   loadAvatarImage(DefaultAvatarImage);
   adPicPreview.style.backgroundImage = ``;
   adForm.reset();
