@@ -55,7 +55,6 @@ const Capacity = {
   NOTFORGUEST: 0
 };
 
-
 let modalMessage = null;
 
 const addFormEvent = () => {
