@@ -1,21 +1,24 @@
 'use strict';
 
-(() => {
-  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 
-  const getElement = (bookingItem) => {
-    const pinElement = pinTemplate.cloneNode(true);
-    const pinElementImg = pinElement.querySelector(`img`);
+const getElement = (bookingItem) => {
+  const {
+    location: {x, y},
+    author: {avatar},
+    offer: {title}} = bookingItem;
 
-    pinElement.style.top = `${bookingItem.location.y}px`;
-    pinElement.style.left = `${bookingItem.location.x}px`;
-    pinElementImg.setAttribute(`src`, `${bookingItem.author.avatar}`);
-    pinElementImg.setAttribute(`alt`, `${bookingItem.offer.title}`);
+  const pinElement = pinTemplate.cloneNode(true);
+  const pinElementImg = pinElement.querySelector(`img`);
 
-    return pinElement;
-  };
+  pinElement.style.top = `${y}px`;
+  pinElement.style.left = `${x}px`;
+  pinElementImg.setAttribute(`src`, `${avatar}`);
+  pinElementImg.setAttribute(`alt`, `${title}`);
 
-  window.pin = {
-    getElement
-  };
-})();
+  return pinElement;
+};
+
+window.pin = {
+  getElement
+};
