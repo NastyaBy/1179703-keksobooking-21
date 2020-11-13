@@ -5,6 +5,13 @@ const UrlData = {
   SAVE: `https://21.javascript.pages.academy/keksobooking`
 };
 
+const ErrorXhr = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404
+};
+
 const getXhr = (onSuccess, onError) => {
   const xhr = new XMLHttpRequest();
   xhr.responseType = `json`;
@@ -12,17 +19,17 @@ const getXhr = (onSuccess, onError) => {
   xhr.addEventListener(`load`, () => {
     let error;
     switch (xhr.status) {
-      case 200:
+      case ErrorXhr.OK:
         onSuccess(xhr.response);
         break;
 
-      case 400:
+      case ErrorXhr.BAD_REQUEST:
         error = `Неверный запрос`;
         break;
-      case 401:
+      case ErrorXhr.UNAUTHORIZED:
         error = `Пользователь не авторизован`;
         break;
-      case 404:
+      case ErrorXhr.NOT_FOUND:
         error = `Ничего не найдено`;
         break;
 

@@ -208,15 +208,15 @@ const rewritingPlaceholder = () => {
 };
 
 const isPriceValid = (typeValue, priceValue) => {
-  let isValid = false;
-  if (typeValue === TypeOffer.BUNGALOW && priceValue >= MinPrice.BUNGALOW) {
-    isValid = true;
-  } else if (typeValue === TypeOffer.FLAT && priceValue >= MinPrice.FLAT) {
-    isValid = true;
-  } else if (typeValue === TypeOffer.HOUSE && priceValue >= MinPrice.HOUSE) {
-    isValid = true;
-  } else if (typeValue === TypeOffer.PALACE && priceValue >= MinPrice.PALACE) {
-    isValid = true;
+  let isValid = true;
+  if (typeValue === TypeOffer.BUNGALOW && priceValue < MinPrice.BUNGALOW) {
+    isValid = false;
+  } else if (typeValue === TypeOffer.FLAT && priceValue < MinPrice.FLAT) {
+    isValid = false;
+  } else if (typeValue === TypeOffer.HOUSE && priceValue < MinPrice.HOUSE) {
+    isValid = false;
+  } else if (typeValue === TypeOffer.PALACE && priceValue < MinPrice.PALACE) {
+    isValid = false;
   }
   return isValid;
 };
